@@ -19,12 +19,7 @@ const ConnectSection = () => {
 
   useEffect(() => {
     const tick = () => {
-      const fmt = new Intl.DateTimeFormat("en-US", {
-        timeZone: "America/Los_Angeles",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-      });
+      const fmt = new Intl.DateTimeFormat("en-US", { timeZone: "America/Los_Angeles", hour: "2-digit", minute: "2-digit", hour12: false });
       setPstTime(fmt.format(new Date()));
     };
     tick();
@@ -48,11 +43,7 @@ const ConnectSection = () => {
       const response = await fetch(`${API_BASE_URL}/api/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: formData.name.trim(),
-          email: formData.email.trim(),
-          message: formData.message.trim(),
-        }),
+        body: JSON.stringify({ name: formData.name.trim(), email: formData.email.trim(), message: formData.message.trim() }),
         signal: controller.signal,
       });
       clearTimeout(timeoutId);
@@ -97,11 +88,7 @@ const ConnectSection = () => {
   );
 
   const headlineGlow = (hovered: boolean) =>
-    isMatrix && hovered
-      ? "2px 0 #ff0040, -2px 0 #00ff88, 0 0 20px rgba(0,255,100,0.3)"
-      : isMatrix
-      ? "0 0 10px rgba(0,255,100,0.15)"
-      : "none";
+    isMatrix && hovered ? "2px 0 #ff0040, -2px 0 #00ff88, 0 0 20px rgba(0,255,100,0.3)" : isMatrix ? "0 0 10px rgba(0,255,100,0.15)" : "none";
 
   return (
     <section id="connect" ref={sectionRef} className="pt-28 pb-0 transition-colors duration-500">
@@ -115,7 +102,7 @@ const ConnectSection = () => {
         <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.1 }}
           className="text-center mb-6" onMouseEnter={() => setHoveredHeadline(true)} onMouseLeave={() => setHoveredHeadline(false)}>
           <h2 className={`font-display uppercase leading-[0.9] ${isMatrix ? "text-green-400" : "text-foreground"}`}
-            style={{ fontSize: "clamp(2rem, 8vw, 8rem)", letterSpacing: "-0.03em", textShadow: headlineGlow(hoveredHeadline), transition: "text-shadow 0.2s" }}>
+            style={{ fontSize: "clamp(2.5rem, 8vw, 8rem)", letterSpacing: "-0.03em", textShadow: headlineGlow(hoveredHeadline), transition: "text-shadow 0.2s" }}>
             System Integrity
           </h2>
         </motion.div>
@@ -128,12 +115,12 @@ const ConnectSection = () => {
         <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.3 }}
           className="text-center mb-20" onMouseEnter={() => setHoveredHeadline(true)} onMouseLeave={() => setHoveredHeadline(false)}>
           <h2 className={`font-display uppercase leading-[0.9] ${isMatrix ? "text-green-400" : "text-foreground"}`}
-            style={{ fontSize: "clamp(2rem, 8vw, 8rem)", letterSpacing: "-0.03em", textShadow: headlineGlow(hoveredHeadline), transition: "text-shadow 0.2s" }}>
+            style={{ fontSize: "clamp(2.5rem, 8vw, 8rem)", letterSpacing: "-0.03em", textShadow: headlineGlow(hoveredHeadline), transition: "text-shadow 0.2s" }}>
             a Secure Handshake
           </h2>
         </motion.div>
 
-        {/* Form — unchanged */}
+        {/* Form */}
         <motion.form initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.7 }} className="space-y-10 mb-0" onSubmit={handleSubmit}>
           {[
@@ -169,6 +156,7 @@ const ConnectSection = () => {
             <span className="text-sm">{isMatrix ? ">_" : "↗"}</span>
           </motion.button>
 
+          {/* Audit line — NO border above, seamless */}
           <div className="mt-8">
             <p className={`text-[10px] uppercase tracking-wider text-center ${isMatrix ? "text-green-500/50 font-mono" : "text-muted-foreground/60 font-sans"}`}>
               [SECURE_AUDIT_ACTIVE]: All interactions are logged for threat intelligence and security research.
@@ -177,98 +165,57 @@ const ConnectSection = () => {
         </motion.form>
       </div>
 
-      {/* ━━━ FOOTER INFO ━━━ */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.7 }}
-        className="w-full px-6 md:px-12 lg:px-20 mt-16 pb-8 relative z-10"
-      >
-        {/*
-          FIX: Was flex-row always — both columns collided on mobile.
-          Now: flex-col on mobile (stacked), flex-row on md+ (side by side).
-          gap-10 on mobile gives breathing room between sections.
-        */}
-        <div className="flex flex-col md:flex-row md:justify-between md:items-end w-full gap-10 md:gap-0">
+      {/* ━━━ FULL WIDTH FOOTER INFO ━━━ */}
+      <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}
+        className="w-full px-6 md:px-12 lg:px-20 mt-16 pb-8 relative z-10">
 
-          {/* LEFT — nav links */}
+        <div className="flex flex-row justify-between items-end w-full">
+
+          {/* LEFT — nav links + resume, extreme left, sits above P-R */}
           <div className="flex flex-col gap-3">
             {["About", "Experience", "Works"].map((label) => (
-              <a
-                key={label}
-                href={`#${label.toLowerCase()}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.querySelector(`#${label.toLowerCase()}`)?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className={`text-sm uppercase tracking-[0.12em] transition-opacity hover:opacity-50 cursor-pointer ${fontClass} ${textColor}`}
-              >
+              <a key={label} href={`#${label.toLowerCase()}`}
+                onClick={(e) => { e.preventDefault(); document.querySelector(`#${label.toLowerCase()}`)?.scrollIntoView({ behavior: "smooth" }); }}
+                className={`text-sm uppercase tracking-[0.12em] transition-opacity hover:opacity-50 cursor-pointer ${fontClass} ${textColor}`}>
                 {label}
               </a>
             ))}
-            <a
-              href="/resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={(e) => e.stopPropagation()}
-              className={`text-sm uppercase tracking-[0.12em] transition-opacity hover:opacity-50 cursor-pointer ${fontClass} ${textColor}`}
-              style={{ pointerEvents: "all" }}
-            >
-              Resume ↗
-            </a>
+            <a href="/resume.pdf" target="_blank" rel="noopener noreferrer"
+  onClick={(e) => { e.stopPropagation(); }}
+  className={`text-sm uppercase tracking-[0.12em] transition-opacity hover:opacity-50 cursor-pointer ${fontClass} ${textColor}`}
+  style={{ pointerEvents: "all" }}>
+  Resume ↗
+</a>
           </div>
 
-          {/* RIGHT — contact info */}
-          <div className="flex flex-col items-start md:items-end gap-4">
+          {/* RIGHT — contact info, extreme right, sits above T-Y */}
+          <div className="flex flex-col items-end gap-4">
 
-            {/*
-              FIX: Was text-2xl md:text-4xl — phone number overflowed on mobile.
-              Now: text-lg on mobile, text-3xl on md, text-4xl on lg.
-              Also removed the ↗ arrow from mobile to save space.
-            */}
-            <a
-              href="tel:+13692107491"
-              className={`font-bold tracking-tight transition-opacity hover:opacity-60 flex items-start gap-2 ${fontClass} ${textColor}
-                text-lg md:text-3xl lg:text-4xl`}
-            >
-              +1 (369)-210-7491
-              <span className="hidden md:inline text-xl mt-1">↗</span>
+            {/* Phone */}
+            <a href="tel:+13692107491"
+              className={`text-2xl md:text-4xl font-bold tracking-tight transition-opacity hover:opacity-60 flex items-start gap-2 ${fontClass} ${textColor}`}>
+              +1 (369)-210-7491 <span className="text-xl mt-1">↗</span>
             </a>
 
-            <a
-              href="mailto:prem131298@gmail.com"
-              className={`font-bold tracking-tight transition-opacity hover:opacity-60 flex items-start gap-2 ${fontClass} ${textColor}
-                text-lg md:text-3xl lg:text-4xl`}
-            >
-              {/* FIX: On mobile show short form to prevent overflow */}
-              <span className="md:hidden">prem131298@gmail.com</span>
-              <span className="hidden md:inline">prem131298@gmail.com</span>
-              <span className="hidden md:inline text-xl mt-1">↗</span>
+            {/* Email */}
+            <a href="mailto:prem131298@gmail.com"
+              className={`text-2xl md:text-4xl font-bold tracking-tight transition-opacity hover:opacity-60 flex items-start gap-2 ${fontClass} ${textColor}`}>
+              prem131298@gmail.com <span className="text-xl mt-1">↗</span>
             </a>
 
-            {/* Social links — wrap on mobile */}
-            <div className="flex items-center flex-wrap gap-6 md:gap-8">
-              <a
-                href="mailto:prem131298@gmail.com"
-                className={`flex items-center gap-2 text-xs uppercase tracking-[0.15em] underline underline-offset-4 decoration-1 transition-opacity hover:opacity-60 ${fontClass} ${textColor}`}
-              >
+            {/* Social links */}
+            {/* Social links — gap-3 on mobile keeps all 3 on one row */}
+            <div className="flex items-center flex-nowrap gap-3 md:gap-8">
+              <a href="mailto:prem131298@gmail.com"
+                className={`flex items-center gap-1 md:gap-2 text-[10px] md:text-xs uppercase tracking-[0.1em] md:tracking-[0.15em] underline underline-offset-4 decoration-1 transition-opacity hover:opacity-60 ${fontClass} ${textColor}`}>
                 <GmailLogo /> Email ↗
               </a>
-              <a
-                href="https://www.linkedin.com/in/madishettyprem/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`flex items-center gap-2 text-xs uppercase tracking-[0.15em] underline underline-offset-4 decoration-1 transition-opacity hover:opacity-60 ${fontClass} ${textColor}`}
-              >
+              <a href="https://www.linkedin.com/in/madishettyprem/" target="_blank" rel="noopener noreferrer"
+                className={`flex items-center gap-1 md:gap-2 text-[10px] md:text-xs uppercase tracking-[0.1em] md:tracking-[0.15em] underline underline-offset-4 decoration-1 transition-opacity hover:opacity-60 ${fontClass} ${textColor}`}>
                 <LinkedInLogo /> LinkedIn ↗
               </a>
-              <a
-                href="https://github.com/premmadishetty"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`flex items-center gap-2 text-xs uppercase tracking-[0.15em] underline underline-offset-4 decoration-1 transition-opacity hover:opacity-60 ${fontClass} ${textColor}`}
-              >
+              <a href="https://github.com/premmadishetty" target="_blank" rel="noopener noreferrer"
+                className={`flex items-center gap-1 md:gap-2 text-[10px] md:text-xs uppercase tracking-[0.1em] md:tracking-[0.15em] underline underline-offset-4 decoration-1 transition-opacity hover:opacity-60 ${fontClass} ${textColor}`}>
                 <GitHubLogo /> GitHub ↗
               </a>
             </div>
@@ -277,34 +224,32 @@ const ConnectSection = () => {
         </div>
       </motion.div>
 
-      {/* Full-width name — unchanged */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.8 }}
-        className="w-full"
-      >
-        <h2
-          data-testid="footer-name"
+      {/* Full-width name — DESKTOP (hidden on mobile) */}
+      <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ duration: 0.8 }} className="hidden md:block w-full">
+        <h2 data-testid="footer-name"
           className={`font-display uppercase leading-[0.82] text-center w-full whitespace-nowrap ${isMatrix ? "text-green-400 text-glow-strong" : "text-foreground"}`}
-          style={{ fontSize: "clamp(5rem, 17.8vw, 36rem)", letterSpacing: "-0.04em" }}
-        >
+          style={{ fontSize: "clamp(5rem, 17.8vw, 36rem)", letterSpacing: "-0.04em" }}>
+          PREM MADISHETTY
+        </h2>
+      </motion.div>
+
+      {/* Full-width name — MOBILE (fits single line at ~12vw) */}
+      <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ duration: 0.8 }} className="md:hidden w-full">
+        <h2
+          className={`font-display uppercase leading-[0.82] text-center w-full whitespace-nowrap ${isMatrix ? "text-green-400 text-glow-strong" : "text-foreground"}`}
+          style={{ fontSize: "clamp(2rem, 12vw, 5rem)", letterSpacing: "-0.04em" }}>
           PREM MADISHETTY
         </h2>
       </motion.div>
 
       {/* Bottom bar */}
       <div className={`w-full px-6 md:px-12 lg:px-20 py-4 mt-8 ${isMatrix ? "bg-[#0a0a0a]" : "bg-background"}`}>
-        {/*
-          FIX: Was flex justify-between — time + Sanskrit overlapped on mobile.
-          Now: flex-col on mobile (stacked), flex-row on sm+.
-        */}
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 sm:gap-0">
-          <span className={`text-xs tracking-[0.15em] uppercase ${isMatrix ? "font-mono text-green-500/50" : "font-sans text-muted-foreground/50"}`}>
+        <div className="flex justify-between items-center">
+          {/* Bottom bar text — smaller on mobile so they don't collide */}
+          <span className={`text-[9px] md:text-xs tracking-[0.1em] md:tracking-[0.15em] uppercase ${isMatrix ? "font-mono text-green-500/50" : "font-sans text-muted-foreground/50"}`}>
             San Diego, California: (GMT-8) {pstTime}
           </span>
-          <span className={`text-xs tracking-[0.08em] ${isMatrix ? "font-mono text-green-500/50" : "font-sans text-muted-foreground/60"}`}>
+          <span className={`text-[9px] md:text-xs tracking-[0.06em] md:tracking-[0.08em] ${isMatrix ? "font-mono text-green-500/50" : "font-sans text-muted-foreground/60"}`}>
             {"सत्यमेव जयते"}
           </span>
         </div>
