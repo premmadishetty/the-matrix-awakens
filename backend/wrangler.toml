@@ -1,0 +1,27 @@
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# THE MATRIX AWAKENS — Cloudflare Workers Config
+# "The Matrix cannot tell you who you are." — wrangler.toml can.
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+name       = "the-matrix-awakens"
+main       = "src/worker.js"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# ━━━ KARMA DATABASE — Cloudflare D1 ━━━
+# "All actions are performed by the qualities of nature." — Gita 3.27
+[[d1_databases]]
+binding      = "DB"               # accessed as c.env.DB in worker
+database_name = "matrix-karma-db"
+database_id  = "YOUR_D1_DATABASE_ID_HERE"   # filled after: wrangler d1 create matrix-karma-db
+
+# ━━━ SECRETS (set via CLI — never in this file) ━━━
+# wrangler secret put GROQ_API_KEY
+# wrangler secret put RESEND_API_KEY
+# wrangler secret put ADMIN_EMAIL
+# wrangler secret put ADMIN_SECRET
+
+# ━━━ LOCAL DEV ━━━
+[dev]
+port = 8787
+local_protocol = "http"

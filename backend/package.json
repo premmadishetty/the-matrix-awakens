@@ -1,0 +1,19 @@
+{
+  "name": "the-matrix-awakens-worker",
+  "version": "1.0.0",
+  "description": "The Matrix Awakens — Neural Proxy on Cloudflare Workers Edge",
+  "main": "src/worker.js",
+  "type": "module",
+  "scripts": {
+    "dev":    "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:init:local":  "wrangler d1 execute matrix-karma-db --local --file=schema.sql",
+    "db:init:remote": "wrangler d1 execute matrix-karma-db --remote --file=schema.sql"
+  },
+  "dependencies": {
+    "hono": "^4.4.0"
+  },
+  "devDependencies": {
+    "wrangler": "^3.60.0"
+  }
+}

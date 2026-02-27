@@ -1,0 +1,316 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fira+Code:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Noto+Sans+Devanagari:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* ===== LIGHT THEME ===== */
+  :root,
+  .theme-olha {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 0%;
+    --card: 0 0% 98%;
+    --card-foreground: 0 0% 0%;
+    --popover: 0 0% 98%;
+    --popover-foreground: 0 0% 0%;
+    --primary: 0 0% 0%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 0%;
+    --muted: 0 0% 93%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 0 0% 93%;
+    --accent-foreground: 0 0% 0%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 88%;
+    --input: 0 0% 88%;
+    --ring: 0 0% 0%;
+    --radius: 0.25rem;
+    --matrix-green: 0 0% 0%;
+    --matrix-green-dim: 0 0% 30%;
+    --matrix-green-glow: 0 0% 0%;
+    --matrix-dark: 0 0% 98%;
+    --matrix-surface: 0 0% 96%;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 0 0% 0%;
+    --sidebar-primary: 0 0% 0%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 93%;
+    --sidebar-accent-foreground: 0 0% 0%;
+    --sidebar-border: 0 0% 88%;
+    --sidebar-ring: 0 0% 0%;
+  }
+
+  /* ===== DARK THEME (true dark — inverse of light, no matrix) ===== */
+  .theme-dark {
+    --background: 0 0% 4%;
+    --foreground: 0 0% 95%;
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 0 0% 95%;
+    --primary-foreground: 0 0% 4%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 95%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 55%;
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 95%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 95%;
+    --border: 0 0% 18%;
+    --input: 0 0% 18%;
+    --ring: 0 0% 95%;
+    --radius: 0.25rem;
+    --matrix-green: 0 0% 95%;
+    --matrix-green-dim: 0 0% 60%;
+    --matrix-green-glow: 0 0% 95%;
+    --matrix-dark: 0 0% 4%;
+    --matrix-surface: 0 0% 8%;
+    --sidebar-background: 0 0% 8%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 0 0% 95%;
+    --sidebar-primary-foreground: 0 0% 4%;
+    --sidebar-accent: 0 0% 15%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 0 0% 18%;
+    --sidebar-ring: 0 0% 95%;
+  }
+
+  /* ===== MATRIX THEME ===== */
+  .theme-matrix {
+    --background: 0 0% 0%;
+    --foreground: 120 100% 50%;
+    --card: 0 0% 4%;
+    --card-foreground: 120 100% 50%;
+    --popover: 0 0% 4%;
+    --popover-foreground: 120 100% 50%;
+    --primary: 120 100% 50%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 120 40% 8%;
+    --secondary-foreground: 120 100% 50%;
+    --muted: 120 10% 12%;
+    --muted-foreground: 120 30% 40%;
+    --accent: 120 80% 25%;
+    --accent-foreground: 120 100% 50%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 120 30% 15%;
+    --input: 120 30% 15%;
+    --ring: 120 100% 50%;
+    --matrix-green: 120 100% 50%;
+    --matrix-green-dim: 120 60% 30%;
+    --matrix-green-glow: 120 100% 70%;
+    --matrix-dark: 0 0% 2%;
+    --matrix-surface: 0 0% 6%;
+    --sidebar-background: 0 0% 4%;
+    --sidebar-foreground: 120 100% 50%;
+    --sidebar-primary: 120 100% 50%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 120 40% 8%;
+    --sidebar-accent-foreground: 120 100% 50%;
+    --sidebar-border: 120 30% 15%;
+    --sidebar-ring: 120 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Fira Code', monospace;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  .theme-olha body,
+  .theme-olha {
+    font-family: 'Inter', sans-serif;
+  }
+
+  .theme-dark body,
+  .theme-dark {
+    font-family: 'Inter', sans-serif;
+  }
+
+  .theme-matrix body,
+  .theme-matrix {
+    font-family: 'Fira Code', monospace;
+  }
+}
+
+@layer utilities {
+  .text-glow {
+    text-shadow: 0 0 10px hsl(var(--matrix-green) / 0.8),
+                 0 0 20px hsl(var(--matrix-green) / 0.4),
+                 0 0 40px hsl(var(--matrix-green) / 0.2);
+  }
+
+  .text-glow-strong {
+    text-shadow: 0 0 10px hsl(var(--matrix-green) / 1),
+                 0 0 30px hsl(var(--matrix-green) / 0.6),
+                 0 0 60px hsl(var(--matrix-green) / 0.3),
+                 0 0 100px hsl(var(--matrix-green) / 0.15);
+  }
+
+  .text-glow-diffuse {
+    text-shadow: 0 0 15px hsl(var(--matrix-green) / 0.9),
+                 0 0 40px hsl(var(--matrix-green) / 0.5),
+                 0 0 80px hsl(var(--matrix-green) / 0.3),
+                 0 0 140px hsl(var(--matrix-green) / 0.15),
+                 0 0 220px hsl(var(--matrix-green) / 0.07),
+                 0 0 350px hsl(var(--matrix-green) / 0.03);
+  }
+
+  .theme-olha .text-glow,
+  .theme-olha .text-glow-strong,
+  .theme-olha .text-glow-diffuse,
+  .theme-dark .text-glow,
+  .theme-dark .text-glow-strong,
+  .theme-dark .text-glow-diffuse {
+    text-shadow: none;
+  }
+
+  .box-glow {
+    box-shadow: 0 0 10px hsl(var(--matrix-green) / 0.3),
+                0 0 20px hsl(var(--matrix-green) / 0.15),
+                inset 0 0 10px hsl(var(--matrix-green) / 0.05);
+  }
+
+  .theme-olha .box-glow,
+  .theme-dark .box-glow {
+    box-shadow: none;
+  }
+
+  .border-glow {
+    border-color: hsl(var(--matrix-green) / 0.4);
+    box-shadow: 0 0 8px hsl(var(--matrix-green) / 0.2);
+  }
+
+  .theme-olha .border-glow,
+  .theme-dark .border-glow {
+    box-shadow: none;
+  }
+
+  .scanline {
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      hsl(var(--matrix-green) / 0.07) 2px,
+      hsl(var(--matrix-green) / 0.07) 4px
+    );
+  }
+
+  .theme-olha .scanline,
+  .theme-dark .scanline {
+    background: none;
+  }
+
+  .buffer-bar {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, hsl(var(--foreground) / 0.4), transparent);
+    box-shadow: 0 0 8px hsl(var(--foreground) / 0.1);
+  }
+
+  .theme-olha .buffer-bar {
+    background: linear-gradient(90deg, transparent, hsl(0 0% 0% / 0.15), transparent);
+    box-shadow: none;
+  }
+
+  .theme-dark .buffer-bar {
+    background: linear-gradient(90deg, transparent, hsl(0 0% 95% / 0.15), transparent);
+    box-shadow: none;
+  }
+
+  .text-micro {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    font-family: 'Fira Code', monospace;
+    color: hsl(var(--muted-foreground));
+    opacity: 0.5;
+  }
+}
+
+@keyframes sentinel-scanline {
+  0% { top: 0; }
+  100% { top: 100%; }
+}
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-cursor-blink {
+  animation: cursor-blink 1s step-end infinite;
+}
+
+@keyframes glitch-flicker {
+  0%, 100% { transform: translateX(0); opacity: 1; }
+  20% { transform: translateX(-2px); opacity: 0.8; }
+  40% { transform: translateX(2px); opacity: 0.9; }
+  60% { transform: translateX(-1px); opacity: 0.7; }
+  80% { transform: translateX(1px); opacity: 1; }
+}
+
+@keyframes spin-once {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spin-once {
+  animation: spin-once 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glitch-hover:hover {
+  animation: glitch-flicker 0.3s ease-in-out;
+}
+
+.theme-matrix input,
+.theme-matrix textarea {
+  caret-color: transparent;
+}
+
+.theme-matrix input:focus,
+.theme-matrix textarea:focus {
+  background-image: linear-gradient(#00ff41, #00ff41);
+  background-size: 8px 1.2em;
+  background-repeat: no-repeat;
+  background-position: var(--cursor-x, 0) center;
+  animation: block-cursor-blink 1s step-end infinite;
+}
+
+@keyframes block-cursor-blink {
+  0%, 100% { background-color: transparent; }
+  50% { background-color: transparent; }
+}
+
+.matrix-input-glow {
+  box-shadow: 0 1px 0 0 rgba(0, 255, 65, 0.25);
+}
+
+.matrix-input-glow:focus {
+  box-shadow: 0 1px 0 0 rgba(0, 255, 65, 0.6), 0 2px 8px rgba(0, 255, 65, 0.1);
+}
+
+.theme-olha .glitch-hover:hover,
+.theme-dark .glitch-hover:hover {
+  animation: none;
+  transform: translateY(-2px);
+  transition: transform 0.3s ease;
+}
