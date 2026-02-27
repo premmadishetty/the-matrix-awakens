@@ -76,6 +76,8 @@ const HeroSection = () => {
   const imageScale = 1 - scrollProgress * 0.12;
   const imageTranslateY = scrollProgress * 50;
 
+  const glowClass = mode === "matrix" ? "text-glow-strong" : "";
+
   return (
     <motion.section
       ref={sectionRef}
@@ -85,30 +87,32 @@ const HeroSection = () => {
       className="w-full relative overflow-hidden"
       style={{ height: "100dvh" }}
     >
+      {/* ── NAME ── */}
       <motion.h1
         variants={item}
-        className={`font-display uppercase leading-[0.82] text-foreground whitespace-nowrap text-center w-full relative z-10 ${
-          mode === "matrix" ? "text-glow-strong" : ""
-        }`}
+        className={`font-display uppercase leading-[0.82] text-foreground text-center w-full relative z-10 ${glowClass}`}
         style={{
-          fontSize: "clamp(5rem, 17.8vw, 36rem)",
+          // FIX: minimum was 5rem (80px) — caused overflow on phones.
+          // New minimum 2.4rem (38px) fits "PREM MADISHETTY" on 320px screens.
+          fontSize: "clamp(2.4rem, 10.5vw, 36rem)",
           letterSpacing: "-0.04em",
           paddingTop: "clamp(80px, 18dvh, 170px)",
+          // Prevent overflow on very small screens
+          overflowWrap: "break-word",
+          wordBreak: "break-word",
         }}
       >
-        {displayText || " "}
+        {displayText || " "}
       </motion.h1>
 
-      {/* "Based in California" ends before the last t in MADISHETTY */}
+      {/* ── BASED IN CALIFORNIA ── */}
       <motion.div
         variants={item}
         className="w-full flex justify-end relative z-10"
-        style={{ paddingRight: "clamp(50px, 7vw, 140px)" }}
+        style={{ paddingRight: "clamp(16px, 7vw, 140px)" }}
       >
         <span
-          className={`font-mono uppercase text-foreground ${
-            mode === "matrix" ? "text-glow-strong" : ""
-          }`}
+          className={`font-mono uppercase text-foreground ${glowClass}`}
           style={{
             fontSize: "clamp(0.55rem, 0.85vw, 0.95rem)",
             letterSpacing: "0.4em",
@@ -118,6 +122,7 @@ const HeroSection = () => {
         </span>
       </motion.div>
 
+      {/* ── PORTRAIT + LABELS ── */}
       <motion.div
         variants={item}
         className="absolute bottom-0 left-1/2"
@@ -134,27 +139,52 @@ const HeroSection = () => {
             alt="Prem Madishetty"
             className="h-full w-auto object-contain object-bottom"
           />
-          <div className="absolute left-0 bottom-[12%] flex flex-col gap-0"
+
+          {/* ── DESKTOP LABELS: float left of portrait ── */}
+          {/* FIX: hidden on mobile (< md), shown on desktop */}
+          <div
+            className="absolute left-0 bottom-[12%] hidden md:flex flex-col gap-0"
             style={{ transform: "translateX(calc(-100% - 24px))" }}
           >
             <span
-              className={`font-display uppercase text-foreground leading-tight whitespace-nowrap ${
-                mode === "matrix" ? "text-glow-strong" : ""
-              }`}
+              className={`font-display uppercase text-foreground leading-tight whitespace-nowrap ${glowClass}`}
               style={{ fontSize: "clamp(1rem, 1.6vw, 2rem)", letterSpacing: "0.02em" }}
             >
               /Cybersecurity
             </span>
             <span
-              className={`font-display uppercase text-foreground leading-tight whitespace-nowrap ${
-                mode === "matrix" ? "text-glow-strong" : ""
-              }`}
+              className={`font-display uppercase text-foreground leading-tight whitespace-nowrap ${glowClass}`}
               style={{ fontSize: "clamp(1rem, 1.6vw, 2rem)", letterSpacing: "0.02em" }}
             >
               /AI Security
             </span>
           </div>
         </div>
+      </motion.div>
+
+      {/* ── MOBILE LABELS: shown below name, above portrait ── */}
+      {/* FIX: only visible on mobile (< md). Clean, readable, no overflow. */}
+      <motion.div
+        variants={item}
+        className="md:hidden absolute z-10 flex flex-col gap-0"
+        style={{
+          // Sits just below the name — roughly 22% from top
+          top: "clamp(110px, 26dvh, 200px)",
+          left: "clamp(16px, 5vw, 32px)",
+        }}
+      >
+        <span
+          className={`font-display uppercase text-foreground leading-tight ${glowClass}`}
+          style={{ fontSize: "clamp(0.9rem, 4.5vw, 1.4rem)", letterSpacing: "0.02em" }}
+        >
+          /Cybersecurity
+        </span>
+        <span
+          className={`font-display uppercase text-foreground leading-tight ${glowClass}`}
+          style={{ fontSize: "clamp(0.9rem, 4.5vw, 1.4rem)", letterSpacing: "0.02em" }}
+        >
+          /AI Security
+        </span>
       </motion.div>
     </motion.section>
   );
