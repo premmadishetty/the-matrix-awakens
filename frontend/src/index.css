@@ -87,13 +87,13 @@
 
   /* Morning (5am–10am) — warm cream / deep navy */
   .theme-olha[data-time="morning"] {
-    --background: 38 76% 97%;   /* #fdf8f0 */
+    --background: 38 72% 94%;   /* warm cream */
     --accent: 32 95% 44%;       /* amber #d97706 */
     --accent-foreground: 0 0% 100%;
     --ring: 32 95% 44%;
   }
   .theme-dark[data-time="morning"] {
-    --background: 216 28% 7%;   /* navy #0d1117 */
+    --background: 216 30% 8%;   /* navy #0d1117 */
     --accent: 212 100% 67%;     /* soft blue */
     --accent-foreground: 216 28% 7%;
     --ring: 212 100% 67%;
@@ -115,13 +115,13 @@
 
   /* Twilight (4pm–8pm) — warm lavender / deep purple-black */
   .theme-olha[data-time="twilight"] {
-    --background: 270 100% 98%; /* #faf5ff */
+    --background: 268 100% 96%; /* lavender */
     --accent: 262 83% 58%;      /* violet #7c3aed */
     --accent-foreground: 0 0% 100%;
     --ring: 262 83% 58%;
   }
   .theme-dark[data-time="twilight"] {
-    --background: 248 44% 7%;   /* #0c0a1a */
+    --background: 250 45% 9%;   /* deep purple-black */
     --accent: 255 92% 76%;      /* purple tint */
     --accent-foreground: 248 44% 7%;
     --ring: 255 92% 76%;
@@ -129,14 +129,14 @@
 
   /* Night (8pm–2am) — soft warm grey / near-black max contrast */
   .theme-olha[data-time="night"] {
-    --background: 40 18% 97%;   /* #f8f7f5 */
+    --background: 40 14% 94%;   /* soft warm grey */
     --accent: 215 19% 35%;      /* slate #475569 */
     --accent-foreground: 0 0% 100%;
     --ring: 215 19% 35%;
   }
   .theme-dark[data-time="night"] {
-    --background: 0 0% 3%;      /* #080808 */
-    --foreground: 0 0% 98%;     /* maximum contrast */
+    --background: 0 0% 2%;      /* near-black */
+    --foreground: 0 0% 100%;    /* maximum contrast */
     --accent: 215 20% 65%;      /* slate */
     --accent-foreground: 0 0% 3%;
     --ring: 215 20% 65%;
@@ -144,17 +144,30 @@
 
   /* Dawn (2am–5am) — pale rose / dark desaturated indigo */
   .theme-olha[data-time="dawn"] {
-    --background: 0 100% 98%;   /* #fff5f5 */
+    --background: 0 100% 96%;   /* pale rose */
     --accent: 347 77% 50%;      /* rose #e11d48 */
     --accent-foreground: 0 0% 100%;
     --ring: 347 77% 50%;
   }
   .theme-dark[data-time="dawn"] {
-    --background: 240 20% 5%;   /* #0a0a0f */
+    --background: 240 25% 7%;   /* dark indigo */
     --accent: 239 84% 67%;      /* subtle indigo */
     --accent-foreground: 240 20% 5%;
     --ring: 239 84% 67%;
   }
+
+  /* Ambient wash — a soft gradient tint from the top of the viewport that
+     makes the time-of-day mood visible at a glance. Hidden in matrix mode. */
+  .theme-olha[data-time="morning"]   .time-wash { background: radial-gradient(120% 60% at 50% 0%, rgba(217, 119, 6, 0.14), transparent 65%); }
+  .theme-olha[data-time="afternoon"] .time-wash { background: radial-gradient(120% 60% at 50% 0%, rgba(14, 165, 233, 0.10), transparent 65%); }
+  .theme-olha[data-time="twilight"]  .time-wash { background: radial-gradient(120% 60% at 50% 0%, rgba(124, 58, 237, 0.12), transparent 65%); }
+  .theme-olha[data-time="night"]     .time-wash { background: radial-gradient(120% 60% at 50% 0%, rgba(71, 85, 105, 0.12), transparent 65%); }
+  .theme-olha[data-time="dawn"]      .time-wash { background: radial-gradient(120% 60% at 50% 0%, rgba(225, 29, 72, 0.12), transparent 65%); }
+  .theme-dark[data-time="morning"]   .time-wash { background: radial-gradient(120% 60% at 50% 0%, rgba(88, 166, 255, 0.12), transparent 65%); }
+  .theme-dark[data-time="afternoon"] .time-wash { background: radial-gradient(120% 60% at 50% 0%, rgba(156, 163, 175, 0.08), transparent 65%); }
+  .theme-dark[data-time="twilight"]  .time-wash { background: radial-gradient(120% 60% at 50% 0%, rgba(167, 139, 250, 0.14), transparent 65%); }
+  .theme-dark[data-time="night"]     .time-wash { background: radial-gradient(120% 60% at 50% 0%, rgba(148, 163, 184, 0.07), transparent 65%); }
+  .theme-dark[data-time="dawn"]      .time-wash { background: radial-gradient(120% 60% at 50% 0%, rgba(99, 102, 241, 0.14), transparent 65%); }
 
   /* ===== MATRIX THEME ===== */
   .theme-matrix {
@@ -330,6 +343,24 @@
 @keyframes cursor-blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
+}
+
+/* Sonar ping — expanding ring used behind the Connect headline */
+@keyframes sonar-ping {
+  0%   { transform: scale(0.4); opacity: 0.5; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+.sonar-ring {
+  animation: sonar-ping 3.2s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+}
+
+/* Third-eye pulse — breathing glow on the About section core */
+@keyframes third-eye-pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 6px hsl(var(--foreground) / 0.3); }
+  50%      { transform: translate(-50%, -50%) scale(1.35); box-shadow: 0 0 18px hsl(var(--foreground) / 0.55); }
+}
+.third-eye {
+  animation: third-eye-pulse 3s ease-in-out infinite;
 }
 
 .animate-cursor-blink {

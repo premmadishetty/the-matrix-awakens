@@ -8,7 +8,7 @@ const OM = "ॐ";
 const NUM_LAYERS = 8;
 const TOTAL_DEPTH = 2400;
 const FOCAL = 600;
-const DURATION = 4000;
+const DURATION = 3200;
 
 interface Drop {
   x: number;

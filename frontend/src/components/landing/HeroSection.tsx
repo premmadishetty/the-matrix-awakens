@@ -20,7 +20,7 @@ const TYPEWRITER_TITLES = [
   "AI Security Researcher",
   "SOC Engineer",
   "Threat Intelligence Specialist",
-  "DevSecOps Architect",
+  "DevSecOps Engineer",
 ];
 const TYPE_MS = 55;
 const DELETE_MS = 30;
@@ -141,8 +141,7 @@ const HeroSection = () => {
       variants={container}
       initial="hidden"
       animate="visible"
-      className="w-full relative overflow-hidden"
-      style={{ height: "100dvh" }}
+      className="w-full relative overflow-hidden h-[92dvh] md:h-[100dvh]"
     >
       <ShieldPulse mode={mode} />
 
@@ -180,7 +179,7 @@ const HeroSection = () => {
         </div>
       </motion.div>
 
-      {/* DESKTOP "Based in California" */}
+      {/* DESKTOP "Based in California" — original, untouched */}
       <motion.div
         variants={item}
         className="hidden md:flex w-full justify-end relative z-10"
@@ -191,13 +190,11 @@ const HeroSection = () => {
             mode === "matrix" ? "text-glow-strong" : ""
           }`}
           style={{
-            fontSize: "clamp(0.69rem, 1.06vw, 1.19rem)",
-            letterSpacing: "0.45em",
+            fontSize: "clamp(0.55rem, 0.85vw, 0.95rem)",
+            letterSpacing: "0.4em",
           }}
         >
-          Based in California{"  "}
-          {/* letterSpacing: 0 keeps flag emoji glyph pairs from splitting apart */}
-          <span style={{ letterSpacing: 0 }}>🇮🇳 🇺🇸 🐻</span>
+          Based in California
         </span>
       </motion.div>
 
@@ -210,10 +207,9 @@ const HeroSection = () => {
           className={`font-mono uppercase text-foreground ${
             mode === "matrix" ? "text-glow-strong" : ""
           }`}
-          style={{ fontSize: "clamp(0.75rem, 3vw, 1.13rem)", letterSpacing: "0.45em" }}
+          style={{ fontSize: "clamp(0.6rem, 2.4vw, 0.9rem)", letterSpacing: "0.3em" }}
         >
-          Based in California{"  "}
-          <span style={{ letterSpacing: 0 }}>🇮🇳 🇺🇸 🐻</span>
+          Based in California
         </span>
       </motion.div>
 
@@ -233,12 +229,13 @@ const HeroSection = () => {
             alt="Prem Madishetty"
             className="h-full w-auto object-contain object-bottom"
           />
-          {/* DESKTOP typewriter — same float position as the old two-line labels */}
+          {/* DESKTOP typewriter — same float position as the old two-line labels.
+              No uppercase transform so titles keep their casing (DevSecOps, SOC). */}
           <div className="absolute left-0 bottom-[12%] hidden md:block"
             style={{ transform: "translateX(calc(-100% - 24px))" }}
           >
             <span
-              className={`font-display uppercase leading-tight whitespace-nowrap ${
+              className={`font-display leading-tight whitespace-nowrap ${
                 mode === "matrix" ? "text-glow-strong" : ""
               }`}
               style={{ fontSize: "clamp(1.1rem, 1.75vw, 2.1rem)", letterSpacing: "0.02em" }}
@@ -256,7 +253,7 @@ const HeroSection = () => {
         style={{ bottom: "30dvh" }}
       >
         <span
-          className={`font-display uppercase leading-tight whitespace-nowrap ${
+          className={`font-display leading-tight whitespace-nowrap ${
             mode === "matrix" ? "text-glow-strong" : ""
           }`}
           style={{ fontSize: "clamp(0.9rem, 4.5vw, 1.4rem)", letterSpacing: "0.02em" }}

@@ -18,7 +18,7 @@ const AboutSection = () => {
     <section
       id="about"
       ref={sectionRef}
-      className="px-5 md:px-16 py-28 max-w-7xl mx-auto"
+      className="px-5 md:px-16 py-16 md:py-24 max-w-7xl mx-auto"
     >
       {mode === "matrix" && (
         <motion.div
@@ -138,7 +138,8 @@ const AboutSection = () => {
                 transition={{ duration: 30 + i * 10, repeat: Infinity, ease: "linear" }}
               />
             ))}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-foreground rounded-full" />
+            {/* Third eye — breathing pulse at the center of the rings */}
+            <div className="third-eye absolute top-1/2 left-1/2 w-3 h-3 bg-foreground rounded-full" />
             <span
               className={`absolute -bottom-10 left-1/2 -translate-x-1/2 text-sm font-bold text-foreground/60 tracking-[0.3em] uppercase whitespace-nowrap ${
                 mode === "matrix" ? "font-mono" : "font-sans"

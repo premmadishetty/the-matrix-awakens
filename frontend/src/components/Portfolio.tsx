@@ -6,7 +6,6 @@ import AboutSection from "./landing/AboutSection";
 import WorksSection from "./landing/WorksSection";
 import ExperienceSection from "./landing/ExperienceSection";
 import ConnectSection from "./landing/ConnectSection";
-import FooterSection from "./landing/FooterSection";
 import GlitchOverlay from "./GlitchOverlay";
 import SentinelChat from "./SentinelChat";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -49,6 +48,8 @@ const PortfolioContent = () => {
       {mode === "matrix" && (
         <div className="fixed inset-0 scanline pointer-events-none z-10" />
       )}
+      {/* Time-of-day ambient wash — gradient tint driven by [data-time] CSS */}
+      {mode !== "matrix" && <div className="time-wash fixed inset-0 pointer-events-none z-0" />}
       <GlitchOverlay />
       <div className="relative z-20">
         <NavigationBar />
@@ -57,7 +58,6 @@ const PortfolioContent = () => {
         <ExperienceSection />
         <WorksSection />
         <ConnectSection />
-        <FooterSection />
       </div>
       <SentinelChat isMatrixMode={mode === "matrix"} />
     </div>

@@ -34,8 +34,16 @@ const YinYang = ({ mode, spinning }: { mode: string; spinning: boolean }) => {
   );
 };
 
+const timeBadge: Record<string, { icon: string; label: string }> = {
+  morning:   { icon: "🌅", label: "morning" },
+  afternoon: { icon: "☀️", label: "afternoon" },
+  twilight:  { icon: "🌆", label: "twilight" },
+  night:     { icon: "🌙", label: "night" },
+  dawn:      { icon: "🌄", label: "dawn" },
+};
+
 const NavigationBar = () => {
-  const { mode, triggerBreach, toggleMode } = useTheme();
+  const { mode, timeOfDay, triggerBreach, toggleMode } = useTheme();
   const [spinning, setSpinning] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const navItems = mode === "matrix" ? matrixNavItems : olhaNavItems;
@@ -83,7 +91,6 @@ const NavigationBar = () => {
           ))}
 
           {/* Resume tab */}
-          {/* TODO: replace frontend/public/resume.pdf with new resume PDF */}
           <motion.a
             href="/resume.pdf" target="_blank" rel="noopener noreferrer"
             initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + navItems.length * 0.1 }}
@@ -92,8 +99,18 @@ const NavigationBar = () => {
           </motion.a>
         </div>
 
-        {/* Yin-Yang toggle + mobile hamburger */}
-        <div className="flex items-center gap-1 md:gap-0">
+        {/* Time-of-day badge + Yin-Yang toggle + mobile hamburger */}
+        <div className="flex items-center gap-1 md:gap-3">
+          {mode !== "matrix" && (
+            <motion.span
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}
+              className="hidden md:flex items-center gap-1.5 text-[9px] tracking-[0.25em] uppercase text-muted-foreground/70 font-sans"
+              title={`Theme shifts with your local time — it's ${timeBadge[timeOfDay].label} now`}
+            >
+              <span className="text-xs">{timeBadge[timeOfDay].icon}</span>
+              {timeBadge[timeOfDay].label}
+            </motion.span>
+          )}
           <motion.button initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
             onClick={handleToggle} aria-label="Toggle light/dark mode"
             className="w-12 md:w-20 flex justify-end py-2 bg-transparent border-none outline-none disabled:opacity-40 disabled:cursor-not-allowed"

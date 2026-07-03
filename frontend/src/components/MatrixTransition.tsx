@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import MatrixRain from "./MatrixRain";
 import Matrix3DCanvas from "./Matrix3DCanvas";
@@ -13,10 +13,10 @@ const MatrixTransition = ({ onComplete }: MatrixTransitionProps) => {
   const [phase, setPhase] = useState<Phase>("rain2d");
   const [exiting, setExiting] = useState(false);
 
-  // Phase 1 → Phase 2: after 3s of 2D rain, begin zoom
+  // Phase 1 → Phase 2: after 2s of 2D rain, begin zoom
   useEffect(() => {
     if (phase !== "rain2d") return;
-    const timer = setTimeout(() => setPhase("zoom"), 3000);
+    const timer = setTimeout(() => setPhase("zoom"), 2000);
     return () => clearTimeout(timer);
   }, [phase]);
 
@@ -28,19 +28,34 @@ const MatrixTransition = ({ onComplete }: MatrixTransitionProps) => {
   }, [phase]);
 
   // 200ms buffer after the 3D zoom ends, then a 300ms fade-out before unmounting
+  const doneRef = useRef(false);
   const handle3DComplete = useCallback(() => {
+    if (doneRef.current) return;
+    doneRef.current = true;
     setTimeout(() => setExiting(true), 200);
     setTimeout(() => onComplete(), 500);
   }, [onComplete]);
 
+  // Click skips straight to the portfolio (with the same graceful fade)
+  const handleSkip = useCallback(() => {
+    if (doneRef.current) return;
+    doneRef.current = true;
+    setExiting(true);
+    setTimeout(() => onComplete(), 300);
+  }, [onComplete]);
+
   return (
     <motion.div
-      className="fixed inset-0 bg-background overflow-hidden"
+      className="fixed inset-0 bg-background overflow-hidden cursor-pointer"
+      onClick={handleSkip}
       animate={{ opacity: exiting ? 0 : 1 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
     >
       {/* Scanline overlay always on top */}
       <div className="scanline fixed inset-0 pointer-events-none z-20" />
+      <span className="fixed bottom-6 left-1/2 -translate-x-1/2 z-30 font-mono text-[10px] tracking-[0.3em] uppercase text-green-500/40 pointer-events-none">
+        [ click to skip ]
+      </span>
 
       <AnimatePresence mode="wait">
         {/* Phase 1: Flat 2D rain */}

@@ -27,7 +27,7 @@ const projects = [
   },
   {
     name: "the-matrix-awakens",
-    url: "https://github.com/premmadishetty/the-matrix-awakens",
+    url: "https://the-matrix-awakens.vercel.app/",
     description: "AI-powered cybersecurity portfolio. React + Cloudflare Workers + D1 + Groq LLM. The simulation is live.",
     tags: ["portfolio", "react", "cloudflare", "groq-ai"],
     lang: "JavaScript",
@@ -155,7 +155,7 @@ const WorksSection = () => {
     : "bg-foreground/5 text-muted-foreground border border-foreground/10";
 
   return (
-    <section id="works" ref={sectionRef} className="px-5 md:px-16 py-28 max-w-7xl mx-auto relative">
+    <section id="works" ref={sectionRef} className="px-5 md:px-16 py-16 md:py-24 max-w-7xl mx-auto relative">
 
       {/* Wireframe grid */}
       <motion.div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ opacity: gridOpacity, scale: gridScale }}>
@@ -181,7 +181,7 @@ const WorksSection = () => {
       </motion.h2>
 
       <motion.p style={{ y: headingY, opacity: headingOpacity }}
-        className={`tracking-[0.2em] uppercase mb-16 relative z-10 ${isMatrix ? "font-mono text-sm text-muted-foreground/60" : "font-sans text-base text-muted-foreground/70 font-medium"}`}>
+        className={`tracking-[0.2em] uppercase mb-10 relative z-10 ${isMatrix ? "font-mono text-sm text-muted-foreground/60" : "font-sans text-base text-muted-foreground/70 font-medium"}`}>
         {isMatrix ? "Maya" : "Selected Projects"}
       </motion.p>
 
@@ -235,14 +235,16 @@ const WorksSection = () => {
               ))}
             </div>
 
-            {/* Bottom row: language, stars, forks, tech pills */}
+            {/* Bottom row: language, stars, forks (zeros hidden), tech pills */}
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 mt-auto pt-1 text-[11px] font-mono text-muted-foreground">
-              <span className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full inline-block" style={{ backgroundColor: project.langColor }} />
-                {project.lang}
-              </span>
-              <span>★ {project.stars}</span>
-              <span>⑂ {project.forks}</span>
+              {project.lang !== "—" && (
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full inline-block" style={{ backgroundColor: project.langColor }} />
+                  {project.lang}
+                </span>
+              )}
+              {project.stars > 0 && <span>★ {project.stars}</span>}
+              {project.forks > 0 && <span>⑂ {project.forks}</span>}
               <span className="flex flex-wrap gap-1 ml-auto">
                 {project.tech.map((key) => {
                   const meta = techMeta[key];
