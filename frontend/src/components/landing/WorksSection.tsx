@@ -4,48 +4,95 @@ import { useTheme } from "@/contexts/ThemeContext";
 
 const projects = [
   {
-    id: "01",
-    title: "Quantum-Safe File Transfer",
-    subtitle: 'The "Post-Quantum" Future',
-    description: "Architected a PQC system utilizing Kyber-512 to mitigate 'Harvest Now, Decrypt Later' threats. This implements FIPS 203 standards to secure data against future cryptographic collapse.",
-    tags: ["Post-Quantum Cryptography", "Kyber-512", "FIPS 203"],
+    name: "Lattice-Map",
+    url: "https://github.com/premmadishetty/Lattice-Map",
+    description: "Zero-dependency static analysis scanner to quantify Quantum Debt and migrate to NIST PQC standards. Generates interactive dependency graphs for cryptographic audits.",
+    tags: ["post-quantum", "cryptography", "NIST-PQC", "static-analysis"],
+    lang: "HTML",
+    langColor: "#e34c26",
+    stars: 0,
+    forks: 0,
+    tech: ["html5", "javascript", "python"],
   },
   {
-    id: "02",
-    title: "Agentic AI Red Teaming",
-    subtitle: "Adversarial AI Defense",
-    description: "Engineered Agentic systems using AutoGen and n8n to automate adversarial prompt engineering. Stress-tested models against the OWASP Top 10 for LLMs, reducing hallucinations by 14%.",
-    tags: ["AI Security", "AutoGen", "Adversarial ML"],
+    name: "Digital-Forensics-Case-M57Jean",
+    url: "https://github.com/premmadishetty/Digital-Forensics-Case-M57Jean",
+    description: "Complete digital forensics investigation of the M57-Jean data exfiltration case using Autopsy 4.22.1. Artifact recovery, exfiltration evidence, and legal assessment.",
+    tags: ["digital-forensics", "autopsy", "incident-response"],
+    lang: "—",
+    langColor: "#6e7681",
+    stars: 0,
+    forks: 0,
+    tech: ["autopsy", "forensics", "mitre"],
   },
   {
-    id: "03",
-    title: "RAG-Based Threat Intelligence",
-    subtitle: "Machine-Speed Incident Response",
-    description: "Engineered a Retrieval-Augmented Generation (RAG) pipeline to ingest global threat feeds. It synthesizes raw data into actionable TTPs and IOCs, directing real-time incident response.",
-    tags: ["RAG", "CTI", "GenAI Operations"],
+    name: "the-matrix-awakens",
+    url: "https://the-matrix-awakens.vercel.app/",
+    description: "AI-powered cybersecurity portfolio. React + Cloudflare Workers + D1 + Groq LLM. The simulation is live.",
+    tags: ["portfolio", "react", "cloudflare", "groq-ai"],
+    lang: "JavaScript",
+    langColor: "#f1e05a",
+    stars: 0,
+    forks: 0,
+    tech: ["react", "typescript", "cloudflare", "vite"],
   },
   {
-    id: "04",
-    title: "Enterprise AI Risk Governance",
-    subtitle: 'The "Shadow AI" Shield',
-    description: "Orchestrated a NIST AI RMF audit of 10+ SaaS tools to mitigate 'Shadow AI' exposure. Implemented real-time prompt monitoring and sensitivity labeling to prevent PII leakage.",
-    tags: ["AI Governance", "NIST AI RMF", "Data Sovereignty"],
+    name: "Automated-AI-Prompt-Injection-Framework",
+    url: "https://github.com/premmadishetty/Automated-AI-Prompt-Injection-Framework-",
+    description: "Automated red-team pipeline stress-testing LLMs against OWASP LLM01. 50 adversarial payloads × 10 attack vectors × n8n automation × OpenRouter API × forensic logging.",
+    tags: ["ai-security", "red-team", "OWASP-LLM", "n8n"],
+    lang: "Python",
+    langColor: "#3572A5",
+    stars: 0,
+    forks: 0,
+    tech: ["python", "n8n", "openai", "docker"],
   },
   {
-    id: "05",
-    title: "Zero Trust IAM Architecture",
-    subtitle: "Identity as the Perimeter",
-    description: "Architected RBAC for hybrid-cloud environments using HashiCorp Vault for automated secret rotation. Enforced context-aware MFA using device posture and geolocation signals.",
-    tags: ["Zero Trust", "HashiCorp Vault", "IAM"],
+    name: "AWS-Honeypot-Deployment",
+    url: "https://github.com/premmadishetty/AWS-Honeypot-Deployment",
+    description: "T-Pot honeypot on AWS EC2 capturing 150K+ real-world attacks in 7 days. GreyNoise + AbuseIPDB enrichment, MITRE ATT&CK mapping, ELK dashboards, IP blocklist automation.",
+    tags: ["honeypot", "aws", "threat-intel", "ELK"],
+    lang: "—",
+    langColor: "#6e7681",
+    stars: 0,
+    forks: 0,
+    tech: ["aws", "elastic", "docker", "python"],
   },
   {
-    id: "06",
-    title: "Cloud-Native DevSecOps Pipeline",
-    subtitle: "Secure Supply Chain Architecture",
-    description: "Built a CI/CD pipeline enforcing zero-trust via Trivy and Cosign for image signing. Implemented Kyverno admission policies to block non-compliant containers at the Kubernetes edge.",
-    tags: ["DevSecOps", "Kubernetes", "Supply Chain Security"],
+    name: "AWS-VPN-Secure-Infrastructure",
+    url: "https://github.com/premmadishetty/AWS-VPN-Secure-Infrastructure",
+    description: "Secure VPN deployment on AWS using OpenVPN, EC2, S3 & IAM. Encrypted storage, least-privilege access control, CloudWatch monitoring, and a full incident response plan.",
+    tags: ["vpn", "aws", "iam", "zero-trust"],
+    lang: "—",
+    langColor: "#6e7681",
+    stars: 0,
+    forks: 0,
+    tech: ["aws", "terraform", "openvpn", "iam"],
   },
 ];
+
+const techMeta: Record<string, { label: string; color: string }> = {
+  react:       { label: "React",       color: "#61dafb" },
+  typescript:  { label: "TypeScript",  color: "#3178c6" },
+  python:      { label: "Python",      color: "#3572A5" },
+  javascript:  { label: "JS",          color: "#f1e05a" },
+  html5:       { label: "HTML",        color: "#e34c26" },
+  cloudflare:  { label: "Cloudflare",  color: "#f48120" },
+  vite:        { label: "Vite",        color: "#646cff" },
+  docker:      { label: "Docker",      color: "#2496ed" },
+  aws:         { label: "AWS",         color: "#ff9900" },
+  elastic:     { label: "ELK",         color: "#00bfb3" },
+  terraform:   { label: "Terraform",   color: "#7b42bc" },
+  openvpn:     { label: "OpenVPN",     color: "#ea7e20" },
+  iam:         { label: "IAM",         color: "#ff9900" },
+  n8n:         { label: "n8n",         color: "#ea4b71" },
+  openai:      { label: "OpenRouter",  color: "#10a37f" },
+  autopsy:     { label: "Autopsy",     color: "#6e7681" },
+  forensics:   { label: "Forensics",   color: "#8b5cf6" },
+  mitre:       { label: "MITRE",       color: "#e53e3e" },
+};
+
+const MAX_TRAIL_PARTICLES = 12;
 
 const WorksSection = () => {
   const { mode, triggerBreach } = useTheme();
@@ -70,8 +117,45 @@ const WorksSection = () => {
     if (mode === "olha") triggerBreach();
   };
 
+  // ── Ambient element: cursor particle trail over the projects grid ──
+  const trailRef = useRef<HTMLDivElement>(null);
+  const particleCount = useRef(0);
+  const lastSpawn = useRef(0);
+
+  const handleTrailMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const container = trailRef.current;
+    if (!container) return;
+    const now = performance.now();
+    if (now - lastSpawn.current < 40 || particleCount.current >= MAX_TRAIL_PARTICLES) return;
+    lastSpawn.current = now;
+    const rect = container.getBoundingClientRect();
+    const dotColor = isMatrix ? "#00ff41" : isDark ? "#ffffff" : "#000000";
+    const dot = document.createElement("div");
+    dot.textContent = "·";
+    dot.style.cssText = `position:absolute;left:${e.clientX - rect.left}px;top:${e.clientY - rect.top}px;pointer-events:none;font-size:16px;line-height:1;color:${dotColor};opacity:0.7;transition:opacity 600ms ease-out;transform:translate(-50%,-50%);z-index:30;`;
+    container.appendChild(dot);
+    particleCount.current++;
+    requestAnimationFrame(() => {
+      dot.style.opacity = "0";
+    });
+    setTimeout(() => {
+      dot.remove();
+      particleCount.current--;
+    }, 600);
+  };
+
+  const cardClass = isMatrix
+    ? "bg-black/40 border border-green-500/25 hover:border-green-400/50"
+    : isDark
+    ? "bg-white/[0.04] border border-white/10 hover:border-white/25"
+    : "bg-white border border-black/[0.08] hover:border-black/[0.18] shadow-sm hover:shadow-md";
+
+  const tagClass = isMatrix
+    ? "bg-green-500/10 text-green-400/80 border border-green-500/20"
+    : "bg-foreground/5 text-muted-foreground border border-foreground/10";
+
   return (
-    <section id="works" ref={sectionRef} className="px-6 md:px-16 py-28 max-w-7xl mx-auto relative">
+    <section id="works" ref={sectionRef} className="px-5 md:px-16 py-16 md:py-24 max-w-7xl mx-auto relative">
 
       {/* Wireframe grid */}
       <motion.div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ opacity: gridOpacity, scale: gridScale }}>
@@ -92,49 +176,94 @@ const WorksSection = () => {
       )}
 
       <motion.h2 style={{ y: headingY, opacity: headingOpacity }}
-        className={`text-foreground mb-3 relative z-10 uppercase ${isMatrix ? "font-serif text-5xl md:text-6xl text-glow" : "font-display tracking-editorial text-7xl md:text-8xl"}`}>
+        className={`text-foreground mb-3 relative z-10 uppercase ${isMatrix ? "font-serif text-4xl md:text-6xl text-glow" : "font-display tracking-editorial text-4xl md:text-7xl lg:text-8xl"}`}>
         {isMatrix ? "THE CONSTRUCT" : "Works"}
       </motion.h2>
 
       <motion.p style={{ y: headingY, opacity: headingOpacity }}
-        className={`tracking-[0.2em] uppercase mb-16 relative z-10 ${isMatrix ? "font-mono text-sm text-muted-foreground/60" : "font-sans text-base text-muted-foreground/70 font-medium"}`}>
+        className={`tracking-[0.2em] uppercase mb-10 relative z-10 ${isMatrix ? "font-mono text-sm text-muted-foreground/60" : "font-sans text-base text-muted-foreground/70 font-medium"}`}>
         {isMatrix ? "Maya" : "Selected Projects"}
       </motion.p>
 
-      <div className="space-y-6 relative z-10">
+      <div
+        ref={trailRef}
+        onMouseMove={handleTrailMove}
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 relative z-10"
+      >
+        {/* Ambient scan beam sweeping down the grid, colored by the time-of-day accent */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
+          <div className="scan-beam" />
+        </div>
         {projects.map((project, i) => (
-          <motion.div key={project.id}
-            initial={{ opacity: 0, y: 50, x: i % 2 === 1 ? 30 : -30 }}
-            whileInView={{ opacity: 1, y: 0, x: 0 }}
+          <motion.div key={project.name}
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.7, delay: i * 0.08, ease: [0.25, 0.46, 0.45, 0.94] }}
+            whileHover={{ y: -3 }}
             onClick={handleCardClick}
-            className={`group border bg-background/80 backdrop-blur-sm p-8 md:p-10 cursor-pointer transition-all duration-300 ${
-              isMatrix
-                ? "border-green-500/30 hover:border-green-400/60 glitch-hover"
-                : isDark
-                ? "border-white/10 hover:border-white/25 hover:bg-white/5"
-                : "border-border hover:border-foreground/20 hover:shadow-lg"
-            } ${i % 2 === 1 ? "md:ml-16" : "md:mr-16"}`}>
+            className={`group rounded-lg p-4 md:p-5 flex flex-col gap-3 backdrop-blur-sm transition-colors duration-300 ${cardClass}`}>
 
-            <div className="flex items-start justify-between mb-3">
-              <div className="flex items-baseline gap-4">
-                <span className="font-sans text-xs text-muted-foreground/40">{project.id}</span>
-                <h3 className="font-sans text-xl md:text-2xl font-bold text-foreground group-hover:text-glow transition-all">
-                  {project.title}
-                </h3>
-              </div>
+            {/* Name + external link */}
+            <div className="flex items-start justify-between gap-2">
+              <h3 className="font-mono text-sm font-semibold text-foreground break-all">
+                <span className="mr-1.5">📁</span>
+                {project.name}
+              </h3>
+              <a
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Open ${project.name} on GitHub`}
+                onClick={(e) => e.stopPropagation()}
+                className="text-muted-foreground hover:text-foreground transition-colors shrink-0 -m-2 p-2"
+              >
+                ↗
+              </a>
             </div>
-            <p className="font-sans text-sm text-muted-foreground/60 italic mb-3">{project.subtitle}</p>
-            <p className="font-sans text-[15px] leading-[1.7] text-muted-foreground mb-5">{project.description}</p>
-            <div className="flex gap-2 flex-wrap">
+
+            {/* Description — clamped to 3 lines */}
+            <p
+              className="text-xs text-muted-foreground leading-relaxed overflow-hidden"
+              style={{ display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}
+            >
+              {project.description}
+            </p>
+
+            {/* Tags */}
+            <div className="flex flex-wrap gap-1.5">
               {project.tags.map((tag) => (
-                <span key={tag} className={`font-sans text-[10px] px-3 py-1 border uppercase tracking-wider text-muted-foreground/60 ${
-                  isDark ? "border-white/15" : "border-border/40"
-                }`}>
+                <span key={tag} className={`text-[10px] font-mono tracking-wide px-2 py-0.5 rounded-full ${tagClass}`}>
                   {tag}
                 </span>
               ))}
+            </div>
+
+            {/* Bottom row: language, stars, forks (zeros hidden), tech pills */}
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 mt-auto pt-1 text-[11px] font-mono text-muted-foreground">
+              {project.lang !== "—" && (
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full inline-block" style={{ backgroundColor: project.langColor }} />
+                  {project.lang}
+                </span>
+              )}
+              {project.stars > 0 && <span>★ {project.stars}</span>}
+              {project.forks > 0 && <span>⑂ {project.forks}</span>}
+              <span className="flex flex-wrap gap-1 ml-auto">
+                {project.tech.map((key) => {
+                  const meta = techMeta[key];
+                  if (!meta) return null;
+                  return (
+                    <span
+                      key={key}
+                      className="text-[9px] px-1.5 py-0.5 rounded font-mono"
+                      style={{ color: meta.color, backgroundColor: `${meta.color}26` }}
+                    >
+                      {meta.label}
+                    </span>
+                  );
+                })}
+              </span>
             </div>
           </motion.div>
         ))}

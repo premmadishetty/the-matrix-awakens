@@ -43,13 +43,13 @@ const TerminalScreen = ({ onComplete }: TerminalScreenProps) => {
     const nextIndex = currentLineIndex + 1;
 
     if (nextIndex >= DIALOGUE.length) {
-      // State 4: Clear text, show only cursor, hold 3 seconds
+      // Clear text, show only cursor, hold briefly, then hand off to the rain
       setIsPausing(true);
       setDisplayedLines([]);
       setCurrentText("");
       pauseTimerRef.current = setTimeout(() => {
         onComplete();
-      }, 3000);
+      }, 2000);
       return;
     }
 
@@ -83,7 +83,7 @@ const TerminalScreen = ({ onComplete }: TerminalScreenProps) => {
   }, [advanceLine, waitingForInput, isPausing]);
 
   return (
-    <div className="fixed inset-0 bg-background flex items-center justify-center p-8 overflow-hidden">
+    <div className="fixed inset-0 bg-background flex items-center justify-center p-8 overflow-hidden cursor-pointer">
       <div className="scanline fixed inset-0 pointer-events-none z-10" />
       <div className="max-w-2xl w-full">
         {!isPausing &&
@@ -104,13 +104,19 @@ const TerminalScreen = ({ onComplete }: TerminalScreenProps) => {
           </div>
         )}
 
-        {/* Blinking cursor — shown idle, between lines, and during the 3-second pause */}
+        {/* Blinking cursor — shown idle, between lines, and during the final pause */}
         {!isTyping && !currentText && (
           <div className="mb-2">
             <span className="inline-block w-3 h-5 bg-foreground animate-cursor-blink" />
           </div>
         )}
       </div>
+
+      {waitingForInput && !isPausing && (
+        <span className="fixed bottom-6 left-1/2 -translate-x-1/2 font-mono text-[10px] tracking-[0.3em] uppercase text-foreground/30">
+          [ click to continue ]
+        </span>
+      )}
     </div>
   );
 };

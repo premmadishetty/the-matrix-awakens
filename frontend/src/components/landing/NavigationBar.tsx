@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useTheme } from "@/contexts/ThemeContext";
 
@@ -37,12 +37,14 @@ const YinYang = ({ mode, spinning }: { mode: string; spinning: boolean }) => {
 const NavigationBar = () => {
   const { mode, triggerBreach, toggleMode } = useTheme();
   const [spinning, setSpinning] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const navItems = mode === "matrix" ? matrixNavItems : olhaNavItems;
   const isMatrix = mode === "matrix";
   const fontClass = isMatrix ? "font-mono" : "font-sans";
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
+    setMobileOpen(false);
     if (mode === "olha" || mode === "dark") triggerBreach({ forNavigation: true });
     document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
   };
@@ -89,15 +91,56 @@ const NavigationBar = () => {
           </motion.a>
         </div>
 
-        {/* Yin-Yang toggle */}
-        <motion.button initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
-          onClick={handleToggle} aria-label="Toggle light/dark mode"
-          className="w-12 md:w-20 flex justify-end bg-transparent border-none outline-none disabled:opacity-40 disabled:cursor-not-allowed"
-          disabled={mode === "matrix"}>
-          <YinYang mode={mode} spinning={spinning} />
-        </motion.button>
+        {/* Yin-Yang toggle + mobile hamburger */}
+        <div className="flex items-center gap-1 md:gap-0">
+          <motion.button initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
+            onClick={handleToggle} aria-label="Toggle light/dark mode"
+            className="w-12 md:w-20 flex justify-end py-2 bg-transparent border-none outline-none disabled:opacity-40 disabled:cursor-not-allowed"
+            disabled={mode === "matrix"}>
+            <YinYang mode={mode} spinning={spinning} />
+          </motion.button>
+
+          {/* Hamburger — mobile only, 44×44 touch target */}
+          <button
+            onClick={() => setMobileOpen((o) => !o)}
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileOpen}
+            className="md:hidden w-11 h-11 flex flex-col items-center justify-center gap-[5px] bg-transparent border-none outline-none"
+          >
+            <span className={`block w-5 h-[2px] bg-foreground transition-transform duration-300 ${mobileOpen ? "translate-y-[7px] rotate-45" : ""}`} />
+            <span className={`block w-5 h-[2px] bg-foreground transition-opacity duration-300 ${mobileOpen ? "opacity-0" : ""}`} />
+            <span className={`block w-5 h-[2px] bg-foreground transition-transform duration-300 ${mobileOpen ? "-translate-y-[7px] -rotate-45" : ""}`} />
+          </button>
+        </div>
 
       </div>
+
+      {/* Mobile menu panel */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className={`md:hidden overflow-hidden ${mode === "dark" || mode === "matrix" ? "bg-black/80" : "bg-white/90"} backdrop-blur-md`}
+          >
+            <div className="flex flex-col px-6 pb-4">
+              {navItems.map((item) => (
+                <a key={item.href + item.label} href={item.href} onClick={(e) => handleNavClick(e, item.href)}
+                  className={`text-xs tracking-[0.25em] uppercase ${fontClass} text-foreground hover:text-muted-foreground transition-colors cursor-pointer py-3`}>
+                  [ {item.label} ]
+                </a>
+              ))}
+              <a href="/resume.pdf" target="_blank" rel="noopener noreferrer"
+                onClick={() => setMobileOpen(false)}
+                className={`text-xs tracking-[0.25em] uppercase ${fontClass} text-foreground hover:text-muted-foreground transition-colors cursor-pointer py-3`}>
+                [ RESUME ]
+              </a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.nav>
   );
 };

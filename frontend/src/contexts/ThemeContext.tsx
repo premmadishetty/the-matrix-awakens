@@ -1,10 +1,22 @@
 import { createContext, useContext, useState, useCallback, useRef, ReactNode } from "react";
 
 export type ThemeMode = "olha" | "dark" | "matrix";
+export type TimeOfDay = "morning" | "afternoon" | "twilight" | "night" | "dawn";
 export interface TriggerBreachOptions { forNavigation?: boolean; }
+
+// Time-of-day sub-theme — applies only within olha/dark modes (matrix ignores it)
+const getTimeOfDay = (): TimeOfDay => {
+  const h = new Date().getHours();
+  if (h >= 5  && h < 10) return "morning";
+  if (h >= 10 && h < 16) return "afternoon";
+  if (h >= 16 && h < 20) return "twilight";
+  if (h >= 20 || h < 2)  return "night";
+  return "dawn"; // 2am–5am
+};
 
 interface ThemeContextType {
   mode: ThemeMode;
+  timeOfDay: TimeOfDay;
   isGlitching: boolean;
   revealOlha: () => void;
   triggerBreach: (options?: TriggerBreachOptions) => void;
@@ -12,7 +24,7 @@ interface ThemeContextType {
 }
 
 const ThemeContext = createContext<ThemeContextType>({
-  mode: "matrix", isGlitching: false,
+  mode: "matrix", timeOfDay: "afternoon", isGlitching: false,
   revealOlha: () => {}, triggerBreach: () => {}, toggleMode: () => {},
 });
 
@@ -21,6 +33,7 @@ const NAVIGATION_GLITCH_DURATION_MS = 4000;
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [mode, setMode] = useState<ThemeMode>("matrix");
+  const [timeOfDay] = useState<TimeOfDay>(() => getTimeOfDay());
   const [isGlitching, setIsGlitching] = useState(false);
   const timerRef = useRef<number | null>(null);
   const baseModeRef = useRef<"olha" | "dark">("olha"); // tracks last non-matrix mode
@@ -67,8 +80,8 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const themeClass = mode === "matrix" ? "theme-matrix" : mode === "dark" ? "theme-dark" : "theme-olha";
 
   return (
-    <ThemeContext.Provider value={{ mode, isGlitching, revealOlha, triggerBreach, toggleMode }}>
-      <div className={themeClass}>{children}</div>
+    <ThemeContext.Provider value={{ mode, timeOfDay, isGlitching, revealOlha, triggerBreach, toggleMode }}>
+      <div className={themeClass} data-time={timeOfDay}>{children}</div>
     </ThemeContext.Provider>
   );
 };

@@ -9,6 +9,8 @@ const ConnectSection = () => {
   const isDark = mode === "dark";
   const [hoveredHeadline, setHoveredHeadline] = useState(false);
   const [pstTime, setPstTime] = useState("");
+  // Hidden greeting — 70% chance of appearing on hover
+  const [showEasterEgg] = useState(() => Math.random() > 0.3);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", message: "" });
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -91,8 +93,8 @@ const ConnectSection = () => {
     isMatrix && hovered ? "2px 0 #ff0040, -2px 0 #00ff88, 0 0 20px rgba(0,255,100,0.3)" : isMatrix ? "0 0 10px rgba(0,255,100,0.15)" : "none";
 
   return (
-    <section id="connect" ref={sectionRef} className="pt-28 pb-0 transition-colors duration-500">
-      <div className="max-w-5xl mx-auto px-6 md:px-16">
+    <section id="connect" ref={sectionRef} className="pt-16 md:pt-24 pb-0 transition-colors duration-500">
+      <div className="max-w-5xl mx-auto px-5 md:px-16">
 
         <motion.p variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ duration: 0.6 }}
           className={`text-center uppercase tracking-[0.35em] mb-10 ${isMatrix ? "font-mono text-base text-green-500/90" : "font-sans text-base text-muted-foreground"}`}>
@@ -100,8 +102,12 @@ const ConnectSection = () => {
         </motion.p>
 
         <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.1 }}
-          className="text-center mb-6" onMouseEnter={() => setHoveredHeadline(true)} onMouseLeave={() => setHoveredHeadline(false)}>
-          <h2 className={`font-display uppercase leading-[0.9] ${isMatrix ? "text-green-400" : "text-foreground"}`}
+          className="text-center mb-6 relative" onMouseEnter={() => setHoveredHeadline(true)} onMouseLeave={() => setHoveredHeadline(false)}>
+          {/* Sonar ping — secure-handshake radar sweep behind the headline */}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none hidden md:block" aria-hidden>
+            <div className="sonar-ring w-40 h-40 rounded-full border" style={{ borderColor: "hsl(var(--accent) / 0.5)" }} />
+          </div>
+          <h2 className={`font-display uppercase leading-[0.9] relative ${isMatrix ? "text-green-400" : "text-foreground"}`}
             style={{ fontSize: "clamp(2.5rem, 8vw, 8rem)", letterSpacing: "-0.03em", textShadow: headlineGlow(hoveredHeadline), transition: "text-shadow 0.2s" }}>
             System Integrity
           </h2>
@@ -191,16 +197,16 @@ const ConnectSection = () => {
           {/* RIGHT — contact info, extreme right, sits above T-Y */}
           <div className="flex flex-col items-end gap-4">
 
-            {/* Phone */}
+            {/* Phone — smaller on mobile so it never clips off-screen */}
             <a href="tel:+13692107491"
-              className={`text-2xl md:text-4xl font-bold tracking-tight transition-opacity hover:opacity-60 flex items-start gap-2 ${fontClass} ${textColor}`}>
-              +1 (369)-210-7491 <span className="text-xl mt-1">↗</span>
+              className={`text-lg sm:text-2xl md:text-4xl font-bold tracking-tight transition-opacity hover:opacity-60 flex items-start gap-2 ${fontClass} ${textColor}`}>
+              +1 (369)-210-7491 <span className="text-base md:text-xl mt-1">↗</span>
             </a>
 
             {/* Email */}
             <a href="mailto:prem131298@gmail.com"
-              className={`text-2xl md:text-4xl font-bold tracking-tight transition-opacity hover:opacity-60 flex items-start gap-2 ${fontClass} ${textColor}`}>
-              prem131298@gmail.com <span className="text-xl mt-1">↗</span>
+              className={`text-lg sm:text-2xl md:text-4xl font-bold tracking-tight transition-opacity hover:opacity-60 flex items-start gap-2 break-all ${fontClass} ${textColor}`}>
+              prem131298@gmail.com <span className="text-base md:text-xl mt-1">↗</span>
             </a>
 
             {/* Social links */}
@@ -242,14 +248,38 @@ const ConnectSection = () => {
         </h2>
       </motion.div>
 
-      {/* Bottom bar */}
-      <div className={`w-full px-6 md:px-12 lg:px-20 py-4 mt-8 ${isMatrix ? "bg-[#0a0a0a]" : "bg-background"}`}>
-        <div className="flex justify-between items-center">
-          {/* Bottom bar text — smaller on mobile so they don't collide */}
-          <span className={`text-[9px] md:text-xs tracking-[0.1em] md:tracking-[0.15em] uppercase ${isMatrix ? "font-mono text-green-500/50" : "font-sans text-muted-foreground/50"}`}>
+      {/* Bottom bar — merged footer: location/time, copyright + credo, Sanskrit */}
+      <div className={`w-full px-5 md:px-12 lg:px-20 py-5 mt-8 border-t border-border/20 ${isMatrix ? "bg-[#0a0a0a]" : "bg-background"}`}>
+        {showEasterEgg && (
+          <div className="flex justify-center mb-2">
+            <span
+              className={`opacity-0 hover:opacity-100 transition-opacity [transition-duration:800ms] hover:[transition-duration:200ms] text-[10px] ${
+                isMatrix ? "font-mono text-green-400" : "font-sans text-muted-foreground/40"
+              }`}
+              style={{ cursor: "default" }}
+            >
+              WAKE UP, PREM
+            </span>
+          </div>
+        )}
+        <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-2 text-center">
+          <span className={`text-[9px] md:text-[10px] tracking-[0.15em] uppercase md:text-left ${isMatrix ? "font-mono text-green-500/50" : "font-sans text-muted-foreground/60"}`}>
+            {/* Live signal bars — a tiny heartbeat next to the clock */}
+            <span className="inline-flex items-end gap-[2px] mr-2 align-middle" aria-hidden>
+              {[7, 10, 5, 9].map((h, i) => (
+                <span key={i} className="signal-bar" style={{ height: h, animationDelay: `${i * 0.18}s` }} />
+              ))}
+            </span>
             San Diego, California: (GMT-8) {pstTime}
           </span>
-          <span className={`text-[9px] md:text-xs tracking-[0.06em] md:tracking-[0.08em] ${isMatrix ? "font-mono text-green-500/50" : "font-sans text-muted-foreground/60"}`}>
+          <span className={`text-[10px] tracking-[0.15em] uppercase ${isMatrix ? "font-mono text-green-500/60" : "font-sans text-muted-foreground/70"}`}>
+            © 2026 Prem Madishetty
+            <span className={`block md:inline md:ml-3 italic normal-case tracking-[0.2em] ${isMatrix ? "text-green-500/40" : "text-muted-foreground/50 font-serif"}`}>
+              Fortified by Code, Guided by Gita ©
+            </span>
+            {isMatrix && <span className="block text-green-500/40 mt-0.5">{"// All systems operational"}</span>}
+          </span>
+          <span className={`text-[12px] font-semibold tracking-wider md:text-right ${isMatrix ? "font-mono text-green-400/80" : "font-serif text-foreground/70"}`}>
             {"सत्यमेव जयते"}
           </span>
         </div>

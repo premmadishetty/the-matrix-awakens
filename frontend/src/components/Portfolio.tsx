@@ -43,11 +43,13 @@ const PortfolioContent = () => {
   }, [mode, triggerBreach]);
 
   return (
-    <div className="bg-background relative transition-colors duration-300" style={{ minHeight: "100dvh" }}>
+    <div className="bg-background relative transition-colors duration-300 overflow-x-hidden" style={{ minHeight: "100dvh" }}>
       {mode === "matrix" && <MatrixRain opacity={0.04} speed={0.4} />}
       {mode === "matrix" && (
         <div className="fixed inset-0 scanline pointer-events-none z-10" />
       )}
+      {/* Time-of-day ambient wash — gradient tint driven by [data-time] CSS */}
+      {mode !== "matrix" && <div className="time-wash fixed inset-0 pointer-events-none z-0" />}
       <GlitchOverlay />
       <div className="relative z-20">
         <NavigationBar />

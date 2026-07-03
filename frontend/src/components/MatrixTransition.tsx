@@ -1,39 +1,52 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import MatrixRain from "./MatrixRain";
-import Matrix3DCanvas from "./Matrix3DCanvas";
 
-type Phase = "rain2d" | "zoom" | "rain3d";
+type Phase = "rain2d" | "zoom";
 
 interface MatrixTransitionProps {
   onComplete: () => void;
 }
 
+// 2D rain → zoom → fade out. (The old 3D fly-through phase was cut.)
 const MatrixTransition = ({ onComplete }: MatrixTransitionProps) => {
   const [phase, setPhase] = useState<Phase>("rain2d");
+  const [exiting, setExiting] = useState(false);
+  const doneRef = useRef(false);
 
-  // Phase 1 → Phase 2: after 3s of 2D rain, begin zoom
-  useEffect(() => {
-    if (phase !== "rain2d") return;
-    const timer = setTimeout(() => setPhase("zoom"), 3000);
-    return () => clearTimeout(timer);
-  }, [phase]);
-
-  // Phase 2 → Phase 3: zoom lasts ~1.2s then switch to 3D
-  useEffect(() => {
-    if (phase !== "zoom") return;
-    const timer = setTimeout(() => setPhase("rain3d"), 1200);
-    return () => clearTimeout(timer);
-  }, [phase]);
-
-  const handle3DComplete = useCallback(() => {
-    onComplete();
+  const finish = useCallback(() => {
+    if (doneRef.current) return;
+    doneRef.current = true;
+    setExiting(true);
+    setTimeout(() => onComplete(), 300);
   }, [onComplete]);
 
+  // Phase 1 → Phase 2: after 2.5s of 2D rain, begin zoom
+  useEffect(() => {
+    if (phase !== "rain2d") return;
+    const timer = setTimeout(() => setPhase("zoom"), 2500);
+    return () => clearTimeout(timer);
+  }, [phase]);
+
+  // Phase 2 → done: zoom lasts ~1.2s, then a short buffer and graceful fade out
+  useEffect(() => {
+    if (phase !== "zoom") return;
+    const timer = setTimeout(finish, 1400);
+    return () => clearTimeout(timer);
+  }, [phase, finish]);
+
   return (
-    <div className="fixed inset-0 bg-background overflow-hidden">
+    <motion.div
+      className="fixed inset-0 bg-background overflow-hidden cursor-pointer"
+      onClick={finish}
+      animate={{ opacity: exiting ? 0 : 1 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+    >
       {/* Scanline overlay always on top */}
       <div className="scanline fixed inset-0 pointer-events-none z-20" />
+      <span className="fixed bottom-6 left-1/2 -translate-x-1/2 z-30 font-mono text-[10px] tracking-[0.3em] uppercase text-green-500/40 pointer-events-none">
+        [ click to skip ]
+      </span>
 
       <AnimatePresence mode="wait">
         {/* Phase 1: Flat 2D rain */}
@@ -60,21 +73,8 @@ const MatrixTransition = ({ onComplete }: MatrixTransitionProps) => {
             <MatrixRain />
           </motion.div>
         )}
-
-        {/* Phase 3: 3D depth fly-through */}
-        {phase === "rain3d" && (
-          <motion.div
-            key="rain3d"
-            className="fixed inset-0"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.4 }}
-          >
-            <Matrix3DCanvas onComplete={handle3DComplete} />
-          </motion.div>
-        )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 };
 
