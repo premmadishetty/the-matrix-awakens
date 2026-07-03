@@ -190,6 +190,10 @@ const WorksSection = () => {
         onMouseMove={handleTrailMove}
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 relative z-10"
       >
+        {/* Ambient scan beam sweeping down the grid, colored by the time-of-day accent */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
+          <div className="scan-beam" />
+        </div>
         {projects.map((project, i) => (
           <motion.div key={project.name}
             initial={{ opacity: 0, y: 50 }}

@@ -144,6 +144,7 @@ const HeroSection = () => {
       className="w-full relative overflow-hidden h-[92dvh] md:h-[100dvh]"
     >
       <ShieldPulse mode={mode} />
+      <DataDust />
 
       <motion.h1
         variants={item}
@@ -167,13 +168,13 @@ const HeroSection = () => {
       >
         <div
           className={`font-display uppercase text-foreground ${mode === "matrix" ? "text-glow-strong" : ""}`}
-          style={{ fontSize: "clamp(4rem, 26vw, 10rem)", letterSpacing: "-0.04em", lineHeight: 0.88 }}
+          style={{ fontSize: "clamp(4.5rem, 30vw, 11rem)", letterSpacing: "-0.04em", lineHeight: 0.88 }}
         >
           {(displayText || " ").slice(0, 4)}
         </div>
         <div
           className={`font-display uppercase text-foreground ${mode === "matrix" ? "text-glow-strong" : ""}`}
-          style={{ fontSize: "clamp(1.9rem, 11.5vw, 5rem)", letterSpacing: "-0.04em", lineHeight: 0.88 }}
+          style={{ fontSize: "clamp(2.1rem, 13vw, 5.5rem)", letterSpacing: "-0.04em", lineHeight: 0.88 }}
         >
           {(displayText || " ").slice(5)}
         </div>
@@ -207,27 +208,43 @@ const HeroSection = () => {
           className={`font-mono uppercase text-foreground ${
             mode === "matrix" ? "text-glow-strong" : ""
           }`}
-          style={{ fontSize: "clamp(0.6rem, 2.4vw, 0.9rem)", letterSpacing: "0.3em" }}
+          style={{ fontSize: "clamp(0.7rem, 2.9vw, 1rem)", letterSpacing: "0.3em" }}
         >
           Based in California
         </span>
       </motion.div>
 
+      {/* MOBILE typewriter — in flow under the location line, clear of the portrait */}
+      <motion.div variants={item} className="md:hidden w-full flex justify-center relative z-20 mt-4">
+        <span
+          className={`font-sans font-semibold leading-tight whitespace-nowrap ${
+            mode === "matrix" ? "text-glow-strong" : ""
+          }`}
+          style={{ fontSize: "clamp(0.95rem, 4.6vw, 1.4rem)", letterSpacing: "0.02em" }}
+        >
+          {typewriterContent}
+        </span>
+      </motion.div>
+
+      {/* Full-width flex centering — inline translateX(-50%) gets clobbered by the
+          framer entrance animation, which shoved the portrait off-center */}
       <motion.div
         variants={item}
-        className="absolute bottom-0 left-1/2"
-        style={{
-          opacity: imageOpacity,
-          transform: `translateX(-50%) scale(${imageScale}) translateY(${imageTranslateY}px)`,
-          willChange: "opacity, transform",
-          height: "80dvh",
-        }}
+        className="absolute bottom-0 left-0 right-0 flex items-end justify-center"
+        style={{ height: "80dvh" }}
       >
-        <div className="relative h-full flex items-end justify-center">
+        <div
+          className="relative h-full flex items-end justify-center"
+          style={{
+            opacity: imageOpacity,
+            transform: `scale(${imageScale}) translateY(${imageTranslateY}px)`,
+            willChange: "opacity, transform",
+          }}
+        >
           <img
             src={portrait}
             alt="Prem Madishetty"
-            className="h-full w-auto object-contain object-bottom"
+            className="h-full w-auto max-w-[94vw] md:max-w-none object-contain object-bottom"
           />
           {/* DESKTOP typewriter — same float position as the old two-line labels.
               No uppercase transform so titles keep their casing (DevSecOps, SOC). */}
@@ -235,10 +252,10 @@ const HeroSection = () => {
             style={{ transform: "translateX(calc(-100% - 24px))" }}
           >
             <span
-              className={`font-display leading-tight whitespace-nowrap ${
+              className={`font-sans font-semibold leading-tight whitespace-nowrap ${
                 mode === "matrix" ? "text-glow-strong" : ""
               }`}
-              style={{ fontSize: "clamp(1.1rem, 1.75vw, 2.1rem)", letterSpacing: "0.02em" }}
+              style={{ fontSize: "clamp(1rem, 1.5vw, 1.8rem)", letterSpacing: "0.02em" }}
             >
               {typewriterContent}
             </span>
@@ -246,25 +263,32 @@ const HeroSection = () => {
         </div>
       </motion.div>
 
-      {/* MOBILE typewriter — pinned to left edge, at portrait mid-height */}
-      <motion.div
-        variants={item}
-        className="md:hidden absolute left-4 z-20"
-        style={{ bottom: "30dvh" }}
-      >
-        <span
-          className={`font-display leading-tight whitespace-nowrap ${
-            mode === "matrix" ? "text-glow-strong" : ""
-          }`}
-          style={{ fontSize: "clamp(0.9rem, 4.5vw, 1.4rem)", letterSpacing: "0.02em" }}
-        >
-          {typewriterContent}
-        </span>
-      </motion.div>
-
     </motion.section>
   );
 };
+
+// ── Ambient element: data dust — faint accent-colored motes drifting up the hero.
+//    Color follows the time-of-day accent, so the organism changes through the day. ──
+const DUST_MOTES = [
+  { left: "8%",  duration: 14, delay: 0 },
+  { left: "22%", duration: 18, delay: 4 },
+  { left: "37%", duration: 12, delay: 8 },
+  { left: "58%", duration: 16, delay: 2 },
+  { left: "74%", duration: 13, delay: 6 },
+  { left: "90%", duration: 17, delay: 10 },
+];
+
+const DataDust = () => (
+  <div className="absolute inset-0 pointer-events-none z-10 opacity-60 md:opacity-100" aria-hidden>
+    {DUST_MOTES.map((m, i) => (
+      <span
+        key={i}
+        className="dust-mote"
+        style={{ left: m.left, animationDuration: `${m.duration}s`, animationDelay: `${m.delay}s` }}
+      />
+    ))}
+  </div>
+);
 
 // ── Ambient element: floating shield pulse (top-right of hero) ──
 const ShieldPulse = ({ mode }: { mode: string }) => {
@@ -280,11 +304,12 @@ const ShieldPulse = ({ mode }: { mode: string }) => {
 
   return (
     <div
-      // top offset clears the fixed nav bar (z-50) so the shield stays visible + hoverable
-      className="absolute top-20 right-6 md:top-24 md:right-8 z-20 opacity-40 md:opacity-100"
+      // top offset clears the fixed nav bar (z-50); kept a safe distance from the
+      // right edge so the icon and its ripple never get clipped
+      className="absolute top-20 right-5 md:top-24 md:right-10 z-20 opacity-70 md:opacity-100"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      style={{ width: 24, height: 24, padding: 10, margin: -10, boxSizing: "content-box" }}
+      style={{ width: 24, height: 24, padding: 10, boxSizing: "content-box" }}
     >
       <motion.svg
         viewBox="0 0 24 24"

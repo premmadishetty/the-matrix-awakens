@@ -1,53 +1,44 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import MatrixRain from "./MatrixRain";
-import Matrix3DCanvas from "./Matrix3DCanvas";
 
-type Phase = "rain2d" | "zoom" | "rain3d";
+type Phase = "rain2d" | "zoom";
 
 interface MatrixTransitionProps {
   onComplete: () => void;
 }
 
+// 2D rain → zoom → fade out. (The old 3D fly-through phase was cut.)
 const MatrixTransition = ({ onComplete }: MatrixTransitionProps) => {
   const [phase, setPhase] = useState<Phase>("rain2d");
   const [exiting, setExiting] = useState(false);
-
-  // Phase 1 → Phase 2: after 2s of 2D rain, begin zoom
-  useEffect(() => {
-    if (phase !== "rain2d") return;
-    const timer = setTimeout(() => setPhase("zoom"), 2000);
-    return () => clearTimeout(timer);
-  }, [phase]);
-
-  // Phase 2 → Phase 3: zoom lasts ~1.2s then switch to 3D
-  useEffect(() => {
-    if (phase !== "zoom") return;
-    const timer = setTimeout(() => setPhase("rain3d"), 1200);
-    return () => clearTimeout(timer);
-  }, [phase]);
-
-  // 200ms buffer after the 3D zoom ends, then a 300ms fade-out before unmounting
   const doneRef = useRef(false);
-  const handle3DComplete = useCallback(() => {
-    if (doneRef.current) return;
-    doneRef.current = true;
-    setTimeout(() => setExiting(true), 200);
-    setTimeout(() => onComplete(), 500);
-  }, [onComplete]);
 
-  // Click skips straight to the portfolio (with the same graceful fade)
-  const handleSkip = useCallback(() => {
+  const finish = useCallback(() => {
     if (doneRef.current) return;
     doneRef.current = true;
     setExiting(true);
     setTimeout(() => onComplete(), 300);
   }, [onComplete]);
 
+  // Phase 1 → Phase 2: after 2.5s of 2D rain, begin zoom
+  useEffect(() => {
+    if (phase !== "rain2d") return;
+    const timer = setTimeout(() => setPhase("zoom"), 2500);
+    return () => clearTimeout(timer);
+  }, [phase]);
+
+  // Phase 2 → done: zoom lasts ~1.2s, then a short buffer and graceful fade out
+  useEffect(() => {
+    if (phase !== "zoom") return;
+    const timer = setTimeout(finish, 1400);
+    return () => clearTimeout(timer);
+  }, [phase, finish]);
+
   return (
     <motion.div
       className="fixed inset-0 bg-background overflow-hidden cursor-pointer"
-      onClick={handleSkip}
+      onClick={finish}
       animate={{ opacity: exiting ? 0 : 1 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
     >
@@ -80,19 +71,6 @@ const MatrixTransition = ({ onComplete }: MatrixTransitionProps) => {
             transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] }}
           >
             <MatrixRain />
-          </motion.div>
-        )}
-
-        {/* Phase 3: 3D depth fly-through */}
-        {phase === "rain3d" && (
-          <motion.div
-            key="rain3d"
-            className="fixed inset-0"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.4 }}
-          >
-            <Matrix3DCanvas onComplete={handle3DComplete} />
           </motion.div>
         )}
       </AnimatePresence>

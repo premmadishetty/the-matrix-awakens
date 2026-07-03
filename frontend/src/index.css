@@ -156,18 +156,22 @@
     --ring: 239 84% 67%;
   }
 
-  /* Ambient wash — a soft gradient tint from the top of the viewport that
-     makes the time-of-day mood visible at a glance. Hidden in matrix mode. */
-  .theme-olha[data-time="morning"]   .time-wash { background: radial-gradient(120% 60% at 50% 0%, rgba(217, 119, 6, 0.14), transparent 65%); }
-  .theme-olha[data-time="afternoon"] .time-wash { background: radial-gradient(120% 60% at 50% 0%, rgba(14, 165, 233, 0.10), transparent 65%); }
-  .theme-olha[data-time="twilight"]  .time-wash { background: radial-gradient(120% 60% at 50% 0%, rgba(124, 58, 237, 0.12), transparent 65%); }
-  .theme-olha[data-time="night"]     .time-wash { background: radial-gradient(120% 60% at 50% 0%, rgba(71, 85, 105, 0.12), transparent 65%); }
-  .theme-olha[data-time="dawn"]      .time-wash { background: radial-gradient(120% 60% at 50% 0%, rgba(225, 29, 72, 0.12), transparent 65%); }
-  .theme-dark[data-time="morning"]   .time-wash { background: radial-gradient(120% 60% at 50% 0%, rgba(88, 166, 255, 0.12), transparent 65%); }
-  .theme-dark[data-time="afternoon"] .time-wash { background: radial-gradient(120% 60% at 50% 0%, rgba(156, 163, 175, 0.08), transparent 65%); }
-  .theme-dark[data-time="twilight"]  .time-wash { background: radial-gradient(120% 60% at 50% 0%, rgba(167, 139, 250, 0.14), transparent 65%); }
-  .theme-dark[data-time="night"]     .time-wash { background: radial-gradient(120% 60% at 50% 0%, rgba(148, 163, 184, 0.07), transparent 65%); }
-  .theme-dark[data-time="dawn"]      .time-wash { background: radial-gradient(120% 60% at 50% 0%, rgba(99, 102, 241, 0.14), transparent 65%); }
+  /* Ambient wash — an omnipresent full-screen filter tinting the whole page
+     with the time-of-day mood. Breathes slowly like a living organism.
+     Hidden in matrix mode. */
+  .time-wash {
+    animation: wash-breathe 12s ease-in-out infinite;
+  }
+  .theme-olha[data-time="morning"]   .time-wash { background: linear-gradient(180deg, rgba(217, 119, 6, 0.16), rgba(217, 119, 6, 0.08) 45%, rgba(217, 119, 6, 0.13)); }
+  .theme-olha[data-time="afternoon"] .time-wash { background: linear-gradient(180deg, rgba(14, 165, 233, 0.12), rgba(14, 165, 233, 0.05) 45%, rgba(14, 165, 233, 0.10)); }
+  .theme-olha[data-time="twilight"]  .time-wash { background: linear-gradient(180deg, rgba(124, 58, 237, 0.14), rgba(124, 58, 237, 0.06) 45%, rgba(124, 58, 237, 0.12)); }
+  .theme-olha[data-time="night"]     .time-wash { background: linear-gradient(180deg, rgba(71, 85, 105, 0.14), rgba(71, 85, 105, 0.06) 45%, rgba(71, 85, 105, 0.12)); }
+  .theme-olha[data-time="dawn"]      .time-wash { background: linear-gradient(180deg, rgba(225, 29, 72, 0.13), rgba(225, 29, 72, 0.05) 45%, rgba(225, 29, 72, 0.11)); }
+  .theme-dark[data-time="morning"]   .time-wash { background: linear-gradient(180deg, rgba(88, 166, 255, 0.14), rgba(88, 166, 255, 0.06) 45%, rgba(88, 166, 255, 0.11)); }
+  .theme-dark[data-time="afternoon"] .time-wash { background: linear-gradient(180deg, rgba(156, 163, 175, 0.10), rgba(156, 163, 175, 0.04) 45%, rgba(156, 163, 175, 0.08)); }
+  .theme-dark[data-time="twilight"]  .time-wash { background: linear-gradient(180deg, rgba(167, 139, 250, 0.16), rgba(167, 139, 250, 0.07) 45%, rgba(167, 139, 250, 0.13)); }
+  .theme-dark[data-time="night"]     .time-wash { background: linear-gradient(180deg, rgba(148, 163, 184, 0.09), rgba(148, 163, 184, 0.04) 45%, rgba(148, 163, 184, 0.07)); }
+  .theme-dark[data-time="dawn"]      .time-wash { background: linear-gradient(180deg, rgba(99, 102, 241, 0.16), rgba(99, 102, 241, 0.07) 45%, rgba(99, 102, 241, 0.13)); }
 
   /* ===== MATRIX THEME ===== */
   .theme-matrix {
@@ -354,13 +358,67 @@
   animation: sonar-ping 3.2s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
 }
 
-/* Third-eye pulse — breathing glow on the About section core */
+/* Breathing of the full-screen time-of-day filter */
+@keyframes wash-breathe {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.55; }
+}
+
+/* Third-eye pulse — breathing glow on the About section core.
+   Colored by the time-of-day accent so it shifts through the day. */
 @keyframes third-eye-pulse {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 6px hsl(var(--foreground) / 0.3); }
-  50%      { transform: translate(-50%, -50%) scale(1.35); box-shadow: 0 0 18px hsl(var(--foreground) / 0.55); }
+  0%, 100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 8px hsl(var(--accent) / 0.6); }
+  50%      { transform: translate(-50%, -50%) scale(1.5); box-shadow: 0 0 26px hsl(var(--accent) / 0.9), 0 0 50px hsl(var(--accent) / 0.4); }
 }
 .third-eye {
+  background: hsl(var(--accent));
   animation: third-eye-pulse 3s ease-in-out infinite;
+}
+
+/* Scan beam — a thin light bar sweeping down the projects grid */
+@keyframes scan-beam {
+  0%   { top: -2%; opacity: 0; }
+  8%   { opacity: 0.5; }
+  92%  { opacity: 0.5; }
+  100% { top: 102%; opacity: 0; }
+}
+.scan-beam {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, hsl(var(--accent) / 0.55), transparent);
+  animation: scan-beam 7s linear infinite;
+}
+
+/* Signal bars — tiny equalizer next to the footer clock */
+@keyframes signal-bar {
+  0%, 100% { transform: scaleY(0.3); }
+  50%      { transform: scaleY(1); }
+}
+.signal-bar {
+  display: inline-block;
+  width: 2px;
+  background: hsl(var(--accent) / 0.8);
+  transform-origin: bottom;
+  animation: signal-bar 1.4s ease-in-out infinite;
+}
+
+/* Data dust — faint motes drifting up through the hero */
+@keyframes dust-rise {
+  0%   { transform: translateY(0); opacity: 0; }
+  12%  { opacity: 0.55; }
+  88%  { opacity: 0.35; }
+  100% { transform: translateY(-88vh); opacity: 0; }
+}
+.dust-mote {
+  position: absolute;
+  bottom: 0;
+  width: 3px;
+  height: 3px;
+  border-radius: 9999px;
+  background: hsl(var(--accent) / 0.7);
+  animation: dust-rise linear infinite;
 }
 
 .animate-cursor-blink {

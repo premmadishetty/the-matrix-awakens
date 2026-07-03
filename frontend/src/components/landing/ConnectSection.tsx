@@ -105,7 +105,7 @@ const ConnectSection = () => {
           className="text-center mb-6 relative" onMouseEnter={() => setHoveredHeadline(true)} onMouseLeave={() => setHoveredHeadline(false)}>
           {/* Sonar ping — secure-handshake radar sweep behind the headline */}
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none hidden md:block" aria-hidden>
-            <div className={`sonar-ring w-40 h-40 rounded-full border ${isMatrix ? "border-green-500/40" : isDark ? "border-white/20" : "border-black/15"}`} />
+            <div className="sonar-ring w-40 h-40 rounded-full border" style={{ borderColor: "hsl(var(--accent) / 0.5)" }} />
           </div>
           <h2 className={`font-display uppercase leading-[0.9] relative ${isMatrix ? "text-green-400" : "text-foreground"}`}
             style={{ fontSize: "clamp(2.5rem, 8vw, 8rem)", letterSpacing: "-0.03em", textShadow: headlineGlow(hoveredHeadline), transition: "text-shadow 0.2s" }}>
@@ -264,6 +264,12 @@ const ConnectSection = () => {
         )}
         <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-2 text-center">
           <span className={`text-[9px] md:text-[10px] tracking-[0.15em] uppercase md:text-left ${isMatrix ? "font-mono text-green-500/50" : "font-sans text-muted-foreground/60"}`}>
+            {/* Live signal bars — a tiny heartbeat next to the clock */}
+            <span className="inline-flex items-end gap-[2px] mr-2 align-middle" aria-hidden>
+              {[7, 10, 5, 9].map((h, i) => (
+                <span key={i} className="signal-bar" style={{ height: h, animationDelay: `${i * 0.18}s` }} />
+              ))}
+            </span>
             San Diego, California: (GMT-8) {pstTime}
           </span>
           <span className={`text-[10px] tracking-[0.15em] uppercase ${isMatrix ? "font-mono text-green-500/60" : "font-sans text-muted-foreground/70"}`}>

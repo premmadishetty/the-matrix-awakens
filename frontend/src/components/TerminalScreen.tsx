@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 const DIALOGUE = [
   "Wake up, Neo.",
@@ -6,71 +6,81 @@ const DIALOGUE = [
   "Follow the Golden Lotus.",
 ];
 
-const TYPE_MS = 45;
-const LINE_PAUSE_MS = 650;
-const FINAL_PAUSE_MS = 1400;
-const START_DELAY_MS = 700;
-
 interface TerminalScreenProps {
   onComplete: () => void;
 }
 
-// Auto-playing terminal intro — no clicks required; any click/key skips straight through
 const TerminalScreen = ({ onComplete }: TerminalScreenProps) => {
+  const [currentLineIndex, setCurrentLineIndex] = useState(-1);
   const [displayedLines, setDisplayedLines] = useState<string[]>([]);
   const [currentText, setCurrentText] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const [waitingForInput, setWaitingForInput] = useState(true);
   const [isPausing, setIsPausing] = useState(false);
-  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-  const doneRef = useRef(false);
+  const pauseTimerRef = useRef<ReturnType<typeof setTimeout>>();
 
-  const finish = useCallback(() => {
-    if (doneRef.current) return;
-    doneRef.current = true;
-    timersRef.current.forEach(clearTimeout);
-    onComplete();
-  }, [onComplete]);
-
-  useEffect(() => {
-    const timers = timersRef.current;
-    let t = START_DELAY_MS;
-
-    DIALOGUE.forEach((line) => {
-      for (let i = 1; i <= line.length; i++) {
-        const slice = line.slice(0, i);
-        timers.push(setTimeout(() => setCurrentText(slice), t));
-        t += TYPE_MS;
-      }
-      timers.push(
-        setTimeout(() => {
-          setDisplayedLines((prev) => [...prev, line]);
-          setCurrentText("");
-        }, t)
-      );
-      t += LINE_PAUSE_MS;
-    });
-
-    // Clear screen, hold on the lone cursor, then hand off to the rain
-    timers.push(
-      setTimeout(() => {
-        setIsPausing(true);
-        setDisplayedLines([]);
+  const typeText = useCallback((text: string, onDone: () => void) => {
+    setIsTyping(true);
+    setCurrentText("");
+    let i = 0;
+    const interval = setInterval(() => {
+      i++;
+      setCurrentText(text.slice(0, i));
+      if (i >= text.length) {
+        clearInterval(interval);
+        setIsTyping(false);
+        setDisplayedLines((prev) => [...prev, text]);
         setCurrentText("");
-      }, t)
-    );
-    timers.push(setTimeout(finish, t + FINAL_PAUSE_MS));
+        onDone();
+      }
+    }, 50);
+    return () => clearInterval(interval);
+  }, []);
 
-    return () => timers.forEach(clearTimeout);
-  }, [finish]);
+  const advanceLine = useCallback(() => {
+    if (isTyping || isPausing) return;
 
-  // Any interaction skips the whole intro
+    const nextIndex = currentLineIndex + 1;
+
+    if (nextIndex >= DIALOGUE.length) {
+      // Clear text, show only cursor, hold briefly, then hand off to the rain
+      setIsPausing(true);
+      setDisplayedLines([]);
+      setCurrentText("");
+      pauseTimerRef.current = setTimeout(() => {
+        onComplete();
+      }, 2000);
+      return;
+    }
+
+    setCurrentLineIndex(nextIndex);
+    setWaitingForInput(false);
+
+    typeText(DIALOGUE[nextIndex], () => {
+      setWaitingForInput(true);
+    });
+  }, [currentLineIndex, isTyping, isPausing, onComplete, typeText]);
+
   useEffect(() => {
-    window.addEventListener("click", finish);
-    window.addEventListener("keydown", finish);
     return () => {
-      window.removeEventListener("click", finish);
-      window.removeEventListener("keydown", finish);
+      if (pauseTimerRef.current) clearTimeout(pauseTimerRef.current);
     };
-  }, [finish]);
+  }, []);
+
+  useEffect(() => {
+    const handleInteraction = () => {
+      if (waitingForInput && !isPausing) {
+        advanceLine();
+      }
+    };
+
+    window.addEventListener("click", handleInteraction);
+    window.addEventListener("keydown", handleInteraction);
+    return () => {
+      window.removeEventListener("click", handleInteraction);
+      window.removeEventListener("keydown", handleInteraction);
+    };
+  }, [advanceLine, waitingForInput, isPausing]);
 
   return (
     <div className="fixed inset-0 bg-background flex items-center justify-center p-8 overflow-hidden cursor-pointer">
@@ -95,16 +105,18 @@ const TerminalScreen = ({ onComplete }: TerminalScreenProps) => {
         )}
 
         {/* Blinking cursor — shown idle, between lines, and during the final pause */}
-        {!currentText && (
+        {!isTyping && !currentText && (
           <div className="mb-2">
             <span className="inline-block w-3 h-5 bg-foreground animate-cursor-blink" />
           </div>
         )}
       </div>
 
-      <span className="fixed bottom-6 left-1/2 -translate-x-1/2 font-mono text-[10px] tracking-[0.3em] uppercase text-foreground/30">
-        [ click to skip ]
-      </span>
+      {waitingForInput && !isPausing && (
+        <span className="fixed bottom-6 left-1/2 -translate-x-1/2 font-mono text-[10px] tracking-[0.3em] uppercase text-foreground/30">
+          [ click to continue ]
+        </span>
+      )}
     </div>
   );
 };

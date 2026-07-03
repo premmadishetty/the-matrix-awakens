@@ -2,16 +2,17 @@ import { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useTheme } from "@/contexts/ThemeContext";
 
-// Bullets transcribed verbatim from Master_Resume.pdf
+// One-liners distilled from Master_Resume.pdf — kept to a consistent length
 const experience = [
   {
     role: "CYBERSECURITY ENGINEER",
     org: "SAN DIEGO STATE UNIVERSITY, AI4BUSINESS LAB",
     meta: "SAN DIEGO, CA — OCT 2024 – PRESENT",
     bullets: [
-      "Implemented DevSecOps Container Security pipeline using Trivy and Kyverno, detecting 50+ vulnerabilities and blocking non-compliant workloads across 3 clusters and integrated SBOM generation and image signing to reduce container attack surface by 40%.",
-      "Engineered automated threat intelligence pipeline using n8n, ingesting OSINT feeds and enriching Indicators of Compromise via VirusTotal, pushing verified IOCs and TTPs to firewall blocklists and SIEM in real time reducing manual threat intel processing by 70%.",
-      "Provisioned Infrastructure as Code in Windows and Linux environments using Terraform and Checkov, enforcing Zero Trust, CIS-aligned baselines, least-privilege IAM to remediate 100+ misconfigurations. Managed state in Git, reducing provisioning time by 60%.",
+      "Implemented DevSecOps container security with Trivy and Kyverno, blocking non-compliant workloads across 3 clusters.",
+      "Integrated SBOM generation and container image signing into CI, reducing the container attack surface by 40%.",
+      "Engineered n8n threat-intel pipeline enriching IOCs via VirusTotal, cutting manual intel processing by 70%.",
+      "Provisioned IaC with Terraform and Checkov, enforcing Zero Trust baselines and cutting provisioning time by 60%.",
     ],
   },
   {
@@ -19,10 +20,10 @@ const experience = [
     org: "NEXTERA ENERGY",
     meta: "MIAMI, FL — MAY 2023 – JULY 2024",
     bullets: [
-      "Administered IBM QRadar and Splunk, tuning 15+ correlation rules to reduce false positives by 30% across 500+ daily alerts. Reduced alert noise and accelerated MTTD by suppressing repetitive alerts, allowing trusted entities and baselining normal behavior.",
-      "Engineered and maintained 10+ Palo Alto XSOAR playbooks orchestrating ServiceNow, AWS, Tenable, Forcepoint and Proofpoint. Built 3 playbooks for IAM, VM and phishing alerts, automating 2,000+ alerts/week, reducing resolution time by 30% across 6 queues.",
-      "Directed Vulnerability Management lifecycle across 3,000 assets using Tenable, triaging 40 tickets/week and coordinating patch teams to get 80% critical vuln closure in 30-day SLA. Reported weekly findings to leadership via dashboards and business leaders call.",
-      "Managed Palo Alto IPS/IDS signature updates with custom and vendor-approved signatures by executing 4 weekly CAB-approved changes to strengthen security posture across a Fortune 200 critical energy infrastructure against emerging and zero-day threats.",
+      "Administered IBM QRadar and Splunk, tuning 15+ correlation rules to cut false positives 30% on 500+ daily alerts.",
+      "Engineered 10+ Palo Alto XSOAR playbooks across ServiceNow, AWS and Tenable, automating 2,000+ alerts per week.",
+      "Directed vulnerability management for 3,000 assets via Tenable, closing 80% of critical vulns within 30-day SLA.",
+      "Executed 4 weekly CAB-approved Palo Alto IPS/IDS signature updates across Fortune 200 energy infrastructure.",
     ],
   },
   {
@@ -30,9 +31,9 @@ const experience = [
     org: "NEXTERA ENERGY",
     meta: "MIAMI, FL — MAY 2021 – APRIL 2023",
     bullets: [
-      "Owned IR lifecycle across 6 ServiceNow queues in a 24×7×365 rotational environment, driving SLA compliance from 89% to 99.5%. Triaged P1/P2 incidents with users, vendors & stakeholders on live bridges, executed emergency changes and delivered RCA reports.",
-      "Monitored Forcepoint DLP across email, print, and RSD channels, auditing 120 cases/week for known-leaver policy violations. Escalated 7 exfiltration attempts of PII, financial data and trade secrets averting an estimated $28M+ in potential per breach cost.",
-      "Authored daily CTI reports for leadership, extracting IOCs, TTPs, and patch recommendations from OSINT and vendor intelligence. Translated intelligence into firewall blocklist updates and SIEM rules to neutralize threats across a $20B critical infrastructure.",
+      "Owned incident response across 6 ServiceNow queues in 24×7×365 rotation, raising SLA compliance from 89% to 99.5%.",
+      "Monitored Forcepoint DLP across email, print and RSD, escalating 7 exfiltration attempts averting $28M+ in losses.",
+      "Authored daily CTI reports, turning IOCs and TTPs into blocklists and SIEM rules for $20B critical infrastructure.",
     ],
   },
 ];
