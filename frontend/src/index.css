@@ -80,6 +80,82 @@
     --sidebar-ring: 0 0% 95%;
   }
 
+  /* ===== TIME-OF-DAY SUB-THEMES =====
+     Applied via data-time attribute on the ThemeProvider root.
+     Only olha (light) and dark modes shift with the clock —
+     matrix mode is always full green-on-black. */
+
+  /* Morning (5am–10am) — warm cream / deep navy */
+  .theme-olha[data-time="morning"] {
+    --background: 38 76% 97%;   /* #fdf8f0 */
+    --accent: 32 95% 44%;       /* amber #d97706 */
+    --accent-foreground: 0 0% 100%;
+    --ring: 32 95% 44%;
+  }
+  .theme-dark[data-time="morning"] {
+    --background: 216 28% 7%;   /* navy #0d1117 */
+    --accent: 212 100% 67%;     /* soft blue */
+    --accent-foreground: 216 28% 7%;
+    --ring: 212 100% 67%;
+  }
+
+  /* Afternoon (10am–4pm) — clean bright white / charcoal */
+  .theme-olha[data-time="afternoon"] {
+    --background: 0 0% 100%;    /* #ffffff */
+    --accent: 199 89% 48%;      /* sky #0ea5e9 */
+    --accent-foreground: 0 0% 100%;
+    --ring: 199 89% 48%;
+  }
+  .theme-dark[data-time="afternoon"] {
+    --background: 221 39% 11%;  /* charcoal #111827 */
+    --accent: 218 11% 65%;      /* cool grey */
+    --accent-foreground: 221 39% 11%;
+    --ring: 218 11% 65%;
+  }
+
+  /* Twilight (4pm–8pm) — warm lavender / deep purple-black */
+  .theme-olha[data-time="twilight"] {
+    --background: 270 100% 98%; /* #faf5ff */
+    --accent: 262 83% 58%;      /* violet #7c3aed */
+    --accent-foreground: 0 0% 100%;
+    --ring: 262 83% 58%;
+  }
+  .theme-dark[data-time="twilight"] {
+    --background: 248 44% 7%;   /* #0c0a1a */
+    --accent: 255 92% 76%;      /* purple tint */
+    --accent-foreground: 248 44% 7%;
+    --ring: 255 92% 76%;
+  }
+
+  /* Night (8pm–2am) — soft warm grey / near-black max contrast */
+  .theme-olha[data-time="night"] {
+    --background: 40 18% 97%;   /* #f8f7f5 */
+    --accent: 215 19% 35%;      /* slate #475569 */
+    --accent-foreground: 0 0% 100%;
+    --ring: 215 19% 35%;
+  }
+  .theme-dark[data-time="night"] {
+    --background: 0 0% 3%;      /* #080808 */
+    --foreground: 0 0% 98%;     /* maximum contrast */
+    --accent: 215 20% 65%;      /* slate */
+    --accent-foreground: 0 0% 3%;
+    --ring: 215 20% 65%;
+  }
+
+  /* Dawn (2am–5am) — pale rose / dark desaturated indigo */
+  .theme-olha[data-time="dawn"] {
+    --background: 0 100% 98%;   /* #fff5f5 */
+    --accent: 347 77% 50%;      /* rose #e11d48 */
+    --accent-foreground: 0 0% 100%;
+    --ring: 347 77% 50%;
+  }
+  .theme-dark[data-time="dawn"] {
+    --background: 240 20% 5%;   /* #0a0a0f */
+    --accent: 239 84% 67%;      /* subtle indigo */
+    --accent-foreground: 240 20% 5%;
+    --ring: 239 84% 67%;
+  }
+
   /* ===== MATRIX THEME ===== */
   .theme-matrix {
     --background: 0 0% 0%;

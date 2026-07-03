@@ -11,6 +11,7 @@ interface MatrixTransitionProps {
 
 const MatrixTransition = ({ onComplete }: MatrixTransitionProps) => {
   const [phase, setPhase] = useState<Phase>("rain2d");
+  const [exiting, setExiting] = useState(false);
 
   // Phase 1 → Phase 2: after 3s of 2D rain, begin zoom
   useEffect(() => {
@@ -26,12 +27,18 @@ const MatrixTransition = ({ onComplete }: MatrixTransitionProps) => {
     return () => clearTimeout(timer);
   }, [phase]);
 
+  // 200ms buffer after the 3D zoom ends, then a 300ms fade-out before unmounting
   const handle3DComplete = useCallback(() => {
-    onComplete();
+    setTimeout(() => setExiting(true), 200);
+    setTimeout(() => onComplete(), 500);
   }, [onComplete]);
 
   return (
-    <div className="fixed inset-0 bg-background overflow-hidden">
+    <motion.div
+      className="fixed inset-0 bg-background overflow-hidden"
+      animate={{ opacity: exiting ? 0 : 1 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+    >
       {/* Scanline overlay always on top */}
       <div className="scanline fixed inset-0 pointer-events-none z-20" />
 
@@ -74,7 +81,7 @@ const MatrixTransition = ({ onComplete }: MatrixTransitionProps) => {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 };
 

@@ -18,7 +18,7 @@ const AboutSection = () => {
     <section
       id="about"
       ref={sectionRef}
-      className="px-6 md:px-16 py-28 max-w-7xl mx-auto"
+      className="px-5 md:px-16 py-28 max-w-7xl mx-auto"
     >
       {mode === "matrix" && (
         <motion.div
@@ -38,8 +38,8 @@ const AboutSection = () => {
         style={{ y: headingY, opacity: headingOpacity }}
         className={`text-foreground mb-3 uppercase ${
           mode === "matrix"
-            ? "font-serif text-5xl md:text-6xl text-glow"
-            : "font-display tracking-editorial text-7xl md:text-8xl"
+            ? "font-serif text-4xl md:text-6xl text-glow"
+            : "font-display tracking-editorial text-4xl md:text-7xl lg:text-8xl"
         }`}
       >
         {mode === "matrix" ? "THE SOURCE" : "About"}

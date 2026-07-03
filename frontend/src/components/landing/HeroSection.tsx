@@ -4,10 +4,27 @@ import { useTheme } from "@/contexts/ThemeContext";
 import portraitBW from "@/assets/portrait-bw.png";
 import portraitMatrix from "@/assets/portrait-matrix.png";
 
+// TO ADD MORE PHOTOS: import them above and add to portraitOptions array
+const portraitOptions = [
+  portraitBW,
+  // Add more imports here as: import portrait2 from "@/assets/portrait-2.png";
+];
+
 const FINAL_TEXT = "PREM MADISHETTY";
 const SCRAMBLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*!?<>/\\|{}[]";
 const SCRAMBLE_DURATION = 1800;
 const SCRAMBLE_INTERVAL = 40;
+
+const TYPEWRITER_TITLES = [
+  "Cybersecurity Analyst",
+  "AI Security Researcher",
+  "SOC Engineer",
+  "Threat Intelligence Specialist",
+  "DevSecOps Architect",
+];
+const TYPE_MS = 55;
+const DELETE_MS = 30;
+const HOLD_MS = 1800;
 
 const container = {
   hidden: { opacity: 0 },
@@ -20,11 +37,53 @@ const item = {
 
 const HeroSection = () => {
   const { mode } = useTheme();
-  const portrait = mode === "matrix" ? portraitMatrix : portraitBW;
+  // Random portrait on each visit; matrix mode always uses the matrix portrait
+  const [activePortrait] = useState<string>(() =>
+    portraitOptions[Math.floor(Math.random() * portraitOptions.length)]
+  );
+  const portrait = mode === "matrix" ? portraitMatrix : activePortrait;
   const sectionRef = useRef<HTMLElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [displayText, setDisplayText] = useState("");
   const scrambleStarted = useRef(false);
+
+  // Typewriter: type → hold → delete → next title, forever
+  const [titleIndex, setTitleIndex] = useState(0);
+  const [typedTitle, setTypedTitle] = useState("");
+  const [typePhase, setTypePhase] = useState<"typing" | "holding" | "deleting">("typing");
+
+  useEffect(() => {
+    const current = TYPEWRITER_TITLES[titleIndex];
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    if (typePhase === "typing") {
+      if (typedTitle.length < current.length) {
+        timer = setTimeout(() => setTypedTitle(current.slice(0, typedTitle.length + 1)), TYPE_MS);
+      } else {
+        setTypePhase("holding");
+      }
+    } else if (typePhase === "holding") {
+      timer = setTimeout(() => setTypePhase("deleting"), HOLD_MS);
+    } else {
+      if (typedTitle.length > 0) {
+        timer = setTimeout(() => setTypedTitle(typedTitle.slice(0, -1)), DELETE_MS);
+      } else {
+        setTitleIndex((i) => (i + 1) % TYPEWRITER_TITLES.length);
+        setTypePhase("typing");
+      }
+    }
+    return () => clearTimeout(timer);
+  }, [typedTitle, typePhase, titleIndex]);
+
+  const typewriterContent = (
+    <>
+      <span className="text-muted-foreground/40">/ </span>
+      <span className="text-foreground">{typedTitle}</span>
+      {/* Cursor visible while typing/deleting, hidden during the hold pause */}
+      {typePhase !== "holding" && (
+        <span className="animate-cursor-blink text-foreground">|</span>
+      )}
+    </>
+  );
 
   const startScramble = useCallback(() => {
     if (scrambleStarted.current) return;
@@ -85,6 +144,8 @@ const HeroSection = () => {
       className="w-full relative overflow-hidden"
       style={{ height: "100dvh" }}
     >
+      <ShieldPulse mode={mode} />
+
       <motion.h1
         variants={item}
         className={`hidden md:block font-display uppercase leading-[0.82] text-foreground whitespace-nowrap text-center w-full relative z-10 ${
@@ -96,7 +157,7 @@ const HeroSection = () => {
           paddingTop: "clamp(80px, 18dvh, 170px)",
         }}
       >
-        {displayText || " "}
+        {displayText || " "}
       </motion.h1>
 
       {/* MOBILE name — two lines filling screen width */}
@@ -109,17 +170,17 @@ const HeroSection = () => {
           className={`font-display uppercase text-foreground ${mode === "matrix" ? "text-glow-strong" : ""}`}
           style={{ fontSize: "clamp(4rem, 26vw, 10rem)", letterSpacing: "-0.04em", lineHeight: 0.88 }}
         >
-          {(displayText || " ").slice(0, 4)}
+          {(displayText || " ").slice(0, 4)}
         </div>
         <div
           className={`font-display uppercase text-foreground ${mode === "matrix" ? "text-glow-strong" : ""}`}
           style={{ fontSize: "clamp(1.9rem, 11.5vw, 5rem)", letterSpacing: "-0.04em", lineHeight: 0.88 }}
         >
-          {(displayText || " ").slice(5)}
+          {(displayText || " ").slice(5)}
         </div>
       </motion.div>
 
-      {/* DESKTOP "Based in California" — original, untouched */}
+      {/* DESKTOP "Based in California" */}
       <motion.div
         variants={item}
         className="hidden md:flex w-full justify-end relative z-10"
@@ -130,11 +191,13 @@ const HeroSection = () => {
             mode === "matrix" ? "text-glow-strong" : ""
           }`}
           style={{
-            fontSize: "clamp(0.55rem, 0.85vw, 0.95rem)",
-            letterSpacing: "0.4em",
+            fontSize: "clamp(0.69rem, 1.06vw, 1.19rem)",
+            letterSpacing: "0.45em",
           }}
         >
-          Based in California
+          Based in California{"  "}
+          {/* letterSpacing: 0 keeps flag emoji glyph pairs from splitting apart */}
+          <span style={{ letterSpacing: 0 }}>🇮🇳 🇺🇸 🐻</span>
         </span>
       </motion.div>
 
@@ -147,9 +210,10 @@ const HeroSection = () => {
           className={`font-mono uppercase text-foreground ${
             mode === "matrix" ? "text-glow-strong" : ""
           }`}
-          style={{ fontSize: "clamp(0.6rem, 2.4vw, 0.9rem)", letterSpacing: "0.3em" }}
+          style={{ fontSize: "clamp(0.75rem, 3vw, 1.13rem)", letterSpacing: "0.45em" }}
         >
-          Based in California
+          Based in California{"  "}
+          <span style={{ letterSpacing: 0 }}>🇮🇳 🇺🇸 🐻</span>
         </span>
       </motion.div>
 
@@ -169,54 +233,105 @@ const HeroSection = () => {
             alt="Prem Madishetty"
             className="h-full w-auto object-contain object-bottom"
           />
-          {/* DESKTOP labels — original float, untouched */}
-          <div className="absolute left-0 bottom-[12%] hidden md:flex flex-col gap-0"
+          {/* DESKTOP typewriter — same float position as the old two-line labels */}
+          <div className="absolute left-0 bottom-[12%] hidden md:block"
             style={{ transform: "translateX(calc(-100% - 24px))" }}
           >
             <span
-              className={`font-display uppercase text-foreground leading-tight whitespace-nowrap ${
+              className={`font-display uppercase leading-tight whitespace-nowrap ${
                 mode === "matrix" ? "text-glow-strong" : ""
               }`}
-              style={{ fontSize: "clamp(1rem, 1.6vw, 2rem)", letterSpacing: "0.02em" }}
+              style={{ fontSize: "clamp(1.1rem, 1.75vw, 2.1rem)", letterSpacing: "0.02em" }}
             >
-              /Cybersecurity
-            </span>
-            <span
-              className={`font-display uppercase text-foreground leading-tight whitespace-nowrap ${
-                mode === "matrix" ? "text-glow-strong" : ""
-              }`}
-              style={{ fontSize: "clamp(1rem, 1.6vw, 2rem)", letterSpacing: "0.02em" }}
-            >
-              /AI Security
+              {typewriterContent}
             </span>
           </div>
         </div>
       </motion.div>
-      {/* MOBILE labels — pinned to left edge, at portrait mid-height */}
+
+      {/* MOBILE typewriter — pinned to left edge, at portrait mid-height */}
       <motion.div
         variants={item}
-        className="md:hidden absolute left-4 z-20 flex flex-col gap-0"
+        className="md:hidden absolute left-4 z-20"
         style={{ bottom: "30dvh" }}
       >
         <span
-          className={`font-display uppercase text-foreground leading-tight whitespace-nowrap ${
+          className={`font-display uppercase leading-tight whitespace-nowrap ${
             mode === "matrix" ? "text-glow-strong" : ""
           }`}
-          style={{ fontSize: "clamp(0.85rem, 4.2vw, 1.3rem)", letterSpacing: "0.02em" }}
+          style={{ fontSize: "clamp(0.9rem, 4.5vw, 1.4rem)", letterSpacing: "0.02em" }}
         >
-          /Cybersecurity
-        </span>
-        <span
-          className={`font-display uppercase text-foreground leading-tight whitespace-nowrap ${
-            mode === "matrix" ? "text-glow-strong" : ""
-          }`}
-          style={{ fontSize: "clamp(0.85rem, 4.2vw, 1.3rem)", letterSpacing: "0.02em" }}
-        >
-          /AI Security
+          {typewriterContent}
         </span>
       </motion.div>
 
     </motion.section>
+  );
+};
+
+// ── Ambient element: floating shield pulse (top-right of hero) ──
+const ShieldPulse = ({ mode }: { mode: string }) => {
+  const [hovered, setHovered] = useState(false);
+  const stroke = mode === "matrix" ? "#00ff41" : mode === "dark" ? "#ffffff" : "#111111";
+  const glow =
+    mode === "matrix"
+      ? "drop-shadow(0 0 6px #00ff41)"
+      : mode === "dark"
+      ? "drop-shadow(0 0 5px rgba(255,255,255,0.5))"
+      : "none";
+  const ripple = mode === "matrix" ? "#00ff41" : "#22c55e";
+
+  return (
+    <div
+      // top offset clears the fixed nav bar (z-50) so the shield stays visible + hoverable
+      className="absolute top-20 right-6 md:top-24 md:right-8 z-20 opacity-40 md:opacity-100"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{ width: 24, height: 24, padding: 10, margin: -10, boxSizing: "content-box" }}
+    >
+      <motion.svg
+        viewBox="0 0 24 24"
+        width={24}
+        height={24}
+        animate={{ scale: [1, 1.08, 1] }}
+        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+        style={{ filter: glow }}
+      >
+        <path
+          d="M12 2l8 3.5v5.2c0 5-3.4 9.2-8 10.8-4.6-1.6-8-5.8-8-10.8V5.5L12 2z"
+          fill="none"
+          stroke={stroke}
+          strokeWidth="1.5"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M8.5 12l2.3 2.3 4.7-4.6"
+          fill="none"
+          stroke={stroke}
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </motion.svg>
+      {hovered && (
+        <motion.span
+          initial={{ scale: 0.6, opacity: 0.7 }}
+          animate={{ scale: 2.2, opacity: 0 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          className="absolute rounded-full border pointer-events-none"
+          style={{ borderColor: ripple, top: 10, right: 10, width: 24, height: 24 }}
+        />
+      )}
+      {hovered && (
+        <span
+          className={`absolute top-full right-2 mt-1 whitespace-nowrap text-[9px] uppercase tracking-widest pointer-events-none ${
+            mode === "matrix" ? "font-mono text-green-400" : "font-sans text-muted-foreground"
+          }`}
+        >
+          Systems secured
+        </span>
+      )}
+    </div>
   );
 };
 

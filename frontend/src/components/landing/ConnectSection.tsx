@@ -92,7 +92,7 @@ const ConnectSection = () => {
 
   return (
     <section id="connect" ref={sectionRef} className="pt-28 pb-0 transition-colors duration-500">
-      <div className="max-w-5xl mx-auto px-6 md:px-16">
+      <div className="max-w-5xl mx-auto px-5 md:px-16">
 
         <motion.p variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} transition={{ duration: 0.6 }}
           className={`text-center uppercase tracking-[0.35em] mb-10 ${isMatrix ? "font-mono text-base text-green-500/90" : "font-sans text-base text-muted-foreground"}`}>

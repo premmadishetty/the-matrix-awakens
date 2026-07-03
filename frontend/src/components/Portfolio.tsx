@@ -6,6 +6,7 @@ import AboutSection from "./landing/AboutSection";
 import WorksSection from "./landing/WorksSection";
 import ExperienceSection from "./landing/ExperienceSection";
 import ConnectSection from "./landing/ConnectSection";
+import FooterSection from "./landing/FooterSection";
 import GlitchOverlay from "./GlitchOverlay";
 import SentinelChat from "./SentinelChat";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -43,7 +44,7 @@ const PortfolioContent = () => {
   }, [mode, triggerBreach]);
 
   return (
-    <div className="bg-background relative transition-colors duration-300" style={{ minHeight: "100dvh" }}>
+    <div className="bg-background relative transition-colors duration-300 overflow-x-hidden" style={{ minHeight: "100dvh" }}>
       {mode === "matrix" && <MatrixRain opacity={0.04} speed={0.4} />}
       {mode === "matrix" && (
         <div className="fixed inset-0 scanline pointer-events-none z-10" />
@@ -56,6 +57,7 @@ const PortfolioContent = () => {
         <ExperienceSection />
         <WorksSection />
         <ConnectSection />
+        <FooterSection />
       </div>
       <SentinelChat isMatrixMode={mode === "matrix"} />
     </div>

@@ -23,8 +23,8 @@ const Index = () => {
         {stage === "terminal" && (
           <motion.div
             key="terminal"
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            exit={{ opacity: 0, filter: "blur(8px)" }}
+            transition={{ duration: 0.6, ease: "easeIn" }}
           >
             <TerminalScreen onComplete={handleTerminalComplete} />
           </motion.div>
@@ -33,10 +33,10 @@ const Index = () => {
         {stage === "transition" && (
           <motion.div
             key="transition"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
           >
             <MatrixTransition onComplete={handleTransitionComplete} />
           </motion.div>
@@ -45,9 +45,9 @@ const Index = () => {
         {stage === "portfolio" && (
           <motion.div
             key="portfolio"
-            initial={{ opacity: 1 }}
+            initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.05 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
           >
             <Portfolio />
           </motion.div>
