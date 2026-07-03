@@ -364,15 +364,16 @@
   50%      { opacity: 0.55; }
 }
 
-/* Third-eye pulse — breathing glow on the About section core.
+/* Third-eye glow — size stays constant; only the light breathes up and down.
    Colored by the time-of-day accent so it shifts through the day. */
-@keyframes third-eye-pulse {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 8px hsl(var(--accent) / 0.6); }
-  50%      { transform: translate(-50%, -50%) scale(1.5); box-shadow: 0 0 26px hsl(var(--accent) / 0.9), 0 0 50px hsl(var(--accent) / 0.4); }
+@keyframes third-eye-glow {
+  0%, 100% { box-shadow: 0 0 6px hsl(var(--accent) / 0.45); opacity: 0.8; }
+  50%      { box-shadow: 0 0 24px hsl(var(--accent) / 0.95), 0 0 48px hsl(var(--accent) / 0.45); opacity: 1; }
 }
 .third-eye {
   background: hsl(var(--accent));
-  animation: third-eye-pulse 3s ease-in-out infinite;
+  transform: translate(-50%, -50%);
+  animation: third-eye-glow 3s ease-in-out infinite;
 }
 
 /* Scan beam — a thin light bar sweeping down the projects grid */
@@ -414,10 +415,11 @@
 .dust-mote {
   position: absolute;
   bottom: 0;
-  width: 3px;
-  height: 3px;
+  width: 4px;
+  height: 4px;
   border-radius: 9999px;
-  background: hsl(var(--accent) / 0.7);
+  background: hsl(var(--accent) / 0.85);
+  box-shadow: 0 0 6px hsl(var(--accent) / 0.5);
   animation: dust-rise linear infinite;
 }
 

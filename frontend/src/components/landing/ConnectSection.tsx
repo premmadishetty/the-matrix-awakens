@@ -230,23 +230,28 @@ const ConnectSection = () => {
         </div>
       </motion.div>
 
-      {/* Full-width name — DESKTOP (hidden on mobile) */}
-      <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ duration: 0.8 }} className="hidden md:block w-full">
-        <h2 data-testid="footer-name"
-          className={`font-display uppercase leading-[0.82] text-center w-full whitespace-nowrap ${isMatrix ? "text-green-400 text-glow-strong" : "text-foreground"}`}
-          style={{ fontSize: "clamp(5rem, 17.8vw, 36rem)", letterSpacing: "-0.04em" }}>
-          PREM MADISHETTY
-        </h2>
-      </motion.div>
+      {/* Full-width name — with a curious digital snake living inside it */}
+      <div className="relative">
+        {/* DESKTOP (hidden on mobile) */}
+        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ duration: 0.8 }} className="hidden md:block w-full">
+          <h2 data-testid="footer-name"
+            className={`font-display uppercase leading-[0.82] text-center w-full whitespace-nowrap ${isMatrix ? "text-green-400 text-glow-strong" : "text-foreground"}`}
+            style={{ fontSize: "clamp(5rem, 17.8vw, 36rem)", letterSpacing: "-0.04em" }}>
+            PREM MADISHETTY
+          </h2>
+        </motion.div>
 
-      {/* Full-width name — MOBILE (fits single line at ~12vw) */}
-      <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ duration: 0.8 }} className="md:hidden w-full">
-        <h2
-          className={`font-display uppercase leading-[0.82] text-center w-full whitespace-nowrap ${isMatrix ? "text-green-400 text-glow-strong" : "text-foreground"}`}
-          style={{ fontSize: "clamp(2rem, 12vw, 5rem)", letterSpacing: "-0.04em" }}>
-          PREM MADISHETTY
-        </h2>
-      </motion.div>
+        {/* MOBILE (fits single line at ~12vw) */}
+        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ duration: 0.8 }} className="md:hidden w-full">
+          <h2
+            className={`font-display uppercase leading-[0.82] text-center w-full whitespace-nowrap ${isMatrix ? "text-green-400 text-glow-strong" : "text-foreground"}`}
+            style={{ fontSize: "clamp(2rem, 12vw, 5rem)", letterSpacing: "-0.04em" }}>
+            PREM MADISHETTY
+          </h2>
+        </motion.div>
+
+        <NameSnake />
+      </div>
 
       {/* Bottom bar — merged footer: location/time, copyright + credo, Sanskrit */}
       <div className={`w-full px-5 md:px-12 lg:px-20 py-5 mt-8 border-t border-border/20 ${isMatrix ? "bg-[#0a0a0a]" : "bg-background"}`}>
@@ -286,6 +291,104 @@ const ConnectSection = () => {
       </div>
     </section>
   );
+};
+
+// ── Ambient organism: a digital snake living inside the big name.
+//    It wanders on its own, but gets curious and slithers toward the cursor
+//    when the mouse moves over the name. Colored by the time-of-day accent. ──
+const SNAKE_SEGMENTS = 26;
+
+const NameSnake = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    const parent = canvas.parentElement;
+    if (!parent) return;
+
+    let W = 0;
+    let H = 0;
+    const resize = () => {
+      W = canvas.width = parent.clientWidth;
+      H = canvas.height = parent.clientHeight;
+    };
+    resize();
+    window.addEventListener("resize", resize);
+
+    const pts = Array.from({ length: SNAKE_SEGMENTS }, () => ({ x: W * 0.3, y: H * 0.5 }));
+    const mouse: { x: number | null; y: number | null } = { x: null, y: null };
+    const onMove = (e: MouseEvent) => {
+      const r = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - r.left;
+      mouse.y = e.clientY - r.top;
+    };
+    const onLeave = () => {
+      mouse.x = null;
+      mouse.y = null;
+    };
+    parent.addEventListener("mousemove", onMove);
+    parent.addEventListener("mouseleave", onLeave);
+
+    // Accent color tracks theme/time-of-day switches
+    const readAccent = () =>
+      getComputedStyle(canvas).getPropertyValue("--accent").trim() || "120 100% 40%";
+    let accent = readAccent();
+    const colorTimer = setInterval(() => {
+      accent = readAccent();
+    }, 2000);
+
+    let t = Math.random() * 100;
+    let raf = 0;
+    const frame = () => {
+      t += 0.008;
+      // Default: lazy lissajous wander through the letters
+      let tx = W * (0.5 + 0.42 * Math.sin(t * 1.3));
+      let ty = H * (0.5 + 0.3 * Math.sin(t * 2.1 + 1.7));
+      // Curiosity: the head steers toward the visitor's cursor
+      if (mouse.x !== null && mouse.y !== null) {
+        tx = mouse.x;
+        ty = mouse.y;
+      }
+      const head = pts[0];
+      head.x += (tx - head.x) * 0.055;
+      head.y += (ty - head.y) * 0.055;
+      for (let i = 1; i < SNAKE_SEGMENTS; i++) {
+        pts[i].x += (pts[i - 1].x - pts[i].x) * 0.3;
+        pts[i].y += (pts[i - 1].y - pts[i].y) * 0.3;
+      }
+
+      ctx.clearRect(0, 0, W, H);
+      for (let i = SNAKE_SEGMENTS - 1; i >= 0; i--) {
+        const k = 1 - i / SNAKE_SEGMENTS;
+        ctx.beginPath();
+        ctx.fillStyle = `hsl(${accent} / ${0.25 + k * 0.65})`;
+        ctx.arc(pts[i].x, pts[i].y, 1.4 + k * 3.4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      // Attentive head glow when it's watching the cursor
+      if (mouse.x !== null) {
+        ctx.beginPath();
+        ctx.fillStyle = `hsl(${accent} / 0.35)`;
+        ctx.arc(head.x, head.y, 9, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      raf = requestAnimationFrame(frame);
+    };
+    raf = requestAnimationFrame(frame);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      clearInterval(colorTimer);
+      window.removeEventListener("resize", resize);
+      parent.removeEventListener("mousemove", onMove);
+      parent.removeEventListener("mouseleave", onLeave);
+    };
+  }, []);
+
+  return <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-10" aria-hidden />;
 };
 
 export default ConnectSection;

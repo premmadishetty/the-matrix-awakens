@@ -15,10 +15,15 @@ matrixProxy.use('*', cors({
   origin: (origin) => {
     const allowed = [
       'https://the-matrix-awakens.vercel.app',
+      'https://premmadishetty.com',
+      'https://www.premmadishetty.com',
       'http://localhost:5173',
       'http://localhost:4173',
     ];
-    return allowed.includes(origin) ? origin : allowed[0];
+    if (allowed.includes(origin)) return origin;
+    // Vercel preview deployments of this project
+    if (/^https:\/\/the-matrix-awakens-[a-z0-9-]+-premmadishettys-projects\.vercel\.app$/.test(origin)) return origin;
+    return allowed[0];
   },
   allowMethods: ['GET', 'POST', 'OPTIONS'],
   allowHeaders: ['Content-Type', 'x-admin-secret'],

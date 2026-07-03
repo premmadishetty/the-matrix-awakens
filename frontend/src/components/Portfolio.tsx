@@ -48,8 +48,9 @@ const PortfolioContent = () => {
       {mode === "matrix" && (
         <div className="fixed inset-0 scanline pointer-events-none z-10" />
       )}
-      {/* Time-of-day ambient wash — gradient tint driven by [data-time] CSS */}
-      {mode !== "matrix" && <div className="time-wash fixed inset-0 pointer-events-none z-0" />}
+      {/* Time-of-day ambient wash — sits ABOVE everything (nav + footer included)
+          so the tint is truly omnipresent; pointer-events-none keeps it inert */}
+      {mode !== "matrix" && <div className="time-wash fixed inset-0 pointer-events-none z-[80]" />}
       <GlitchOverlay />
       <div className="relative z-20">
         <NavigationBar />
