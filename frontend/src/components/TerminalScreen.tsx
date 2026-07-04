@@ -111,12 +111,6 @@ const TerminalScreen = ({ onComplete }: TerminalScreenProps) => {
           </div>
         )}
       </div>
-
-      {waitingForInput && !isPausing && (
-        <span className="fixed bottom-6 left-1/2 -translate-x-1/2 font-mono text-[10px] tracking-[0.3em] uppercase text-foreground/30">
-          [ click to continue ]
-        </span>
-      )}
     </div>
   );
 };

@@ -71,20 +71,20 @@ const ConnectSection = () => {
   const fontClass = isMatrix ? "font-mono" : "font-sans";
 
   const GmailLogo = () => (
-    <svg viewBox="0 0 24 24" className="w-4 h-4 shrink-0" fill="none">
+    <svg viewBox="0 0 24 24" className="w-6 h-6 shrink-0" fill="none">
       <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"
         fill={isMatrix ? "#00ff41" : isDark ? "#f0f0f0" : "#EA4335"} />
     </svg>
   );
 
   const LinkedInLogo = () => (
-    <svg viewBox="0 0 24 24" className="w-4 h-4 shrink-0" fill={isMatrix ? "#00ff41" : isDark ? "#f0f0f0" : "#0A66C2"}>
+    <svg viewBox="0 0 24 24" className="w-6 h-6 shrink-0" fill={isMatrix ? "#00ff41" : isDark ? "#f0f0f0" : "#0A66C2"}>
       <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
     </svg>
   );
 
   const GitHubLogo = () => (
-    <svg viewBox="0 0 24 24" className="w-4 h-4 shrink-0" fill={isMatrix ? "#00ff41" : isDark ? "#f0f0f0" : "#181717"}>
+    <svg viewBox="0 0 24 24" className="w-6 h-6 shrink-0" fill={isMatrix ? "#00ff41" : isDark ? "#f0f0f0" : "#181717"}>
       <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
     </svg>
   );
@@ -173,12 +173,12 @@ const ConnectSection = () => {
 
       {/* ━━━ FULL WIDTH FOOTER INFO ━━━ */}
       <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}
-        className="w-full px-6 md:px-12 lg:px-20 mt-16 pb-8 relative z-10">
+        className="w-full px-5 md:px-12 lg:px-20 mt-16 pb-8 relative z-10">
 
-        <div className="flex flex-row justify-between items-end w-full">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 w-full">
 
-          {/* LEFT — nav links + resume, extreme left, sits above P-R */}
-          <div className="flex flex-col gap-3">
+          {/* LEFT — nav links + resume (DESKTOP ONLY; removed on phone) */}
+          <div className="hidden md:flex flex-col gap-3">
             {["About", "Experience", "Works"].map((label) => (
               <a key={label} href={`#${label.toLowerCase()}`}
                 onClick={(e) => { e.preventDefault(); document.querySelector(`#${label.toLowerCase()}`)?.scrollIntoView({ behavior: "smooth" }); }}
@@ -187,42 +187,40 @@ const ConnectSection = () => {
               </a>
             ))}
             <a href="/resume.pdf" target="_blank" rel="noopener noreferrer"
-  onClick={(e) => { e.stopPropagation(); }}
-  className={`text-sm uppercase tracking-[0.12em] transition-opacity hover:opacity-50 cursor-pointer ${fontClass} ${textColor}`}
-  style={{ pointerEvents: "all" }}>
-  Resume ↗
-</a>
+              onClick={(e) => { e.stopPropagation(); }}
+              className={`text-sm uppercase tracking-[0.12em] transition-opacity hover:opacity-50 cursor-pointer ${fontClass} ${textColor}`}
+              style={{ pointerEvents: "all" }}>
+              Resume ↗
+            </a>
           </div>
 
-          {/* RIGHT — contact info, extreme right, sits above T-Y */}
-          <div className="flex flex-col items-end gap-4">
+          {/* RIGHT — contact info */}
+          <div className="flex flex-col items-start md:items-end gap-4 w-full md:w-auto">
 
-            {/* Phone — smaller on mobile so it never clips off-screen */}
+            {/* Phone */}
             <a href="tel:+13692107491"
-              className={`text-lg sm:text-2xl md:text-4xl font-bold tracking-tight transition-opacity hover:opacity-60 flex items-start gap-2 ${fontClass} ${textColor}`}>
+              className={`text-xl sm:text-2xl md:text-4xl font-bold tracking-tight transition-opacity hover:opacity-60 flex items-start gap-2 ${fontClass} ${textColor}`}>
               +1 (369)-210-7491 <span className="text-base md:text-xl mt-1">↗</span>
             </a>
 
             {/* Email */}
             <a href="mailto:prem131298@gmail.com"
-              className={`text-lg sm:text-2xl md:text-4xl font-bold tracking-tight transition-opacity hover:opacity-60 flex items-start gap-2 break-all ${fontClass} ${textColor}`}>
+              className={`text-xl sm:text-2xl md:text-4xl font-bold tracking-tight transition-opacity hover:opacity-60 flex items-start gap-2 break-all ${fontClass} ${textColor}`}>
               prem131298@gmail.com <span className="text-base md:text-xl mt-1">↗</span>
             </a>
 
-            {/* Social links */}
-            {/* Social links — gap-3 on mobile keeps all 3 on one row */}
-            <div className="flex items-center flex-nowrap gap-3 md:gap-8">
-              <a href="mailto:prem131298@gmail.com"
-                className={`flex items-center gap-1 md:gap-2 text-[10px] md:text-xs uppercase tracking-[0.1em] md:tracking-[0.15em] underline underline-offset-4 decoration-1 transition-opacity hover:opacity-60 ${fontClass} ${textColor}`}>
-                <GmailLogo /> Email ↗
+            {/* Social — logos only, grouped in a colorful chip (no text, no arrows) */}
+            <div className={`inline-flex items-center gap-5 px-5 py-2.5 rounded-full border ${isMatrix ? "border-green-500/30 bg-green-500/5" : "border-border/40 bg-foreground/[0.03]"}`}>
+              <a href="mailto:prem131298@gmail.com" aria-label="Email" className="transition-transform hover:scale-125">
+                <GmailLogo />
               </a>
-              <a href="https://www.linkedin.com/in/madishettyprem/" target="_blank" rel="noopener noreferrer"
-                className={`flex items-center gap-1 md:gap-2 text-[10px] md:text-xs uppercase tracking-[0.1em] md:tracking-[0.15em] underline underline-offset-4 decoration-1 transition-opacity hover:opacity-60 ${fontClass} ${textColor}`}>
-                <LinkedInLogo /> LinkedIn ↗
+              <span className={`w-px h-4 ${isMatrix ? "bg-green-500/20" : "bg-border/50"}`} />
+              <a href="https://www.linkedin.com/in/madishettyprem/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="transition-transform hover:scale-125">
+                <LinkedInLogo />
               </a>
-              <a href="https://github.com/premmadishetty" target="_blank" rel="noopener noreferrer"
-                className={`flex items-center gap-1 md:gap-2 text-[10px] md:text-xs uppercase tracking-[0.1em] md:tracking-[0.15em] underline underline-offset-4 decoration-1 transition-opacity hover:opacity-60 ${fontClass} ${textColor}`}>
-                <GitHubLogo /> GitHub ↗
+              <span className={`w-px h-4 ${isMatrix ? "bg-green-500/20" : "bg-border/50"}`} />
+              <a href="https://github.com/premmadishetty" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="transition-transform hover:scale-125">
+                <GitHubLogo />
               </a>
             </div>
 
@@ -230,9 +228,9 @@ const ConnectSection = () => {
         </div>
       </motion.div>
 
-      {/* Full-width name — with a curious digital snake living inside it */}
+      {/* Full-width name band */}
       <div className="relative">
-        {/* DESKTOP (hidden on mobile) */}
+        {/* DESKTOP */}
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ duration: 0.8 }} className="hidden md:block w-full">
           <h2 data-testid="footer-name"
             className={`font-display uppercase leading-[0.82] text-center w-full whitespace-nowrap ${isMatrix ? "text-green-400 text-glow-strong" : "text-foreground"}`}
@@ -241,22 +239,24 @@ const ConnectSection = () => {
           </h2>
         </motion.div>
 
-        {/* MOBILE (fits single line at ~12vw) */}
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ duration: 0.8 }} className="md:hidden w-full">
-          <h2
-            className={`font-display uppercase leading-[0.82] text-center w-full whitespace-nowrap ${isMatrix ? "text-green-400 text-glow-strong" : "text-foreground"}`}
-            style={{ fontSize: "clamp(2rem, 12vw, 5rem)", letterSpacing: "-0.04em" }}>
-            PREM MADISHETTY
-          </h2>
+        {/* MOBILE — two big lines, more prominent */}
+        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ duration: 0.8 }} className="md:hidden w-full text-center px-3">
+          <div className={`font-display uppercase leading-[0.84] ${isMatrix ? "text-green-400 text-glow-strong" : "text-foreground"}`}
+            style={{ fontSize: "clamp(4rem, 28vw, 9rem)", letterSpacing: "-0.04em" }}>
+            PREM
+          </div>
+          <div className={`font-display uppercase leading-[0.86] ${isMatrix ? "text-green-400 text-glow-strong" : "text-foreground"}`}
+            style={{ fontSize: "clamp(2.1rem, 13.5vw, 5rem)", letterSpacing: "-0.03em" }}>
+            MADISHETTY
+          </div>
         </motion.div>
-
-        <NameSnake />
       </div>
 
-      {/* Bottom bar — merged footer: location/time, copyright + credo, Sanskrit */}
-      <div className={`w-full px-5 md:px-12 lg:px-20 py-5 mt-8 border-t border-border/20 ${isMatrix ? "bg-[#0a0a0a]" : "bg-background"}`}>
+      {/* Bottom bar — two corners: clock left, credo right. Transparent so the
+          time-of-day wash tints it seamlessly with the rest of the page. */}
+      <div className={`w-full px-5 md:px-12 lg:px-20 py-5 mt-8 border-t border-border/20 ${isMatrix ? "bg-[#0a0a0a]" : "bg-transparent"}`}>
         {showEasterEgg && (
-          <div className="flex justify-center mb-2">
+          <div className="flex justify-center mb-3">
             <span
               className={`opacity-0 hover:opacity-100 transition-opacity [transition-duration:800ms] hover:[transition-duration:200ms] text-[10px] ${
                 isMatrix ? "font-mono text-green-400" : "font-sans text-muted-foreground/40"
@@ -267,9 +267,9 @@ const ConnectSection = () => {
             </span>
           </div>
         )}
-        <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-2 text-center">
-          <span className={`text-[9px] md:text-[10px] tracking-[0.15em] uppercase md:text-left ${isMatrix ? "font-mono text-green-500/50" : "font-sans text-muted-foreground/60"}`}>
-            {/* Live signal bars — a tiny heartbeat next to the clock */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-3">
+          {/* LEFT — clock, left-aligned under the name */}
+          <span className={`text-[9px] md:text-[10px] tracking-[0.15em] uppercase text-left ${isMatrix ? "font-mono text-green-500/50" : "font-sans text-muted-foreground/60"}`}>
             <span className="inline-flex items-end gap-[2px] mr-2 align-middle" aria-hidden>
               {[7, 10, 5, 9].map((h, i) => (
                 <span key={i} className="signal-bar" style={{ height: h, animationDelay: `${i * 0.18}s` }} />
@@ -277,118 +277,21 @@ const ConnectSection = () => {
             </span>
             San Diego, California: (GMT-8) {pstTime}
           </span>
-          <span className={`text-[10px] tracking-[0.15em] uppercase ${isMatrix ? "font-mono text-green-500/60" : "font-sans text-muted-foreground/70"}`}>
-            © 2026 Prem Madishetty
-            <span className={`block md:inline md:ml-3 italic normal-case tracking-[0.2em] ${isMatrix ? "text-green-500/40" : "text-muted-foreground/50 font-serif"}`}>
-              Fortified by Code, Guided by Gita ©
+
+          {/* RIGHT — credo (bold) + Sanskrit, right-aligned; padded clear of the chat launcher */}
+          <div className="flex flex-col items-start md:items-end gap-1 md:pr-16 lg:pr-20">
+            <span className={`text-[11px] md:text-xs font-bold tracking-[0.18em] uppercase ${isMatrix ? "font-mono text-green-400/90" : "font-serif text-foreground/85"}`}>
+              Fortified by Code, Guided by Gita © 2026
             </span>
-            {isMatrix && <span className="block text-green-500/40 mt-0.5">{"// All systems operational"}</span>}
-          </span>
-          <span className={`text-[12px] font-semibold tracking-wider md:text-right ${isMatrix ? "font-mono text-green-400/80" : "font-serif text-foreground/70"}`}>
-            {"सत्यमेव जयते"}
-          </span>
+            <span className={`text-[12px] font-semibold tracking-wider ${isMatrix ? "font-mono text-green-400/70" : "font-serif text-foreground/60"}`}>
+              {"सत्यमेव जयते"}
+            </span>
+            {isMatrix && <span className="font-mono text-[9px] text-green-500/40 tracking-widest">{"// All systems operational"}</span>}
+          </div>
         </div>
       </div>
     </section>
   );
-};
-
-// ── Ambient organism: a digital snake living inside the big name.
-//    It wanders on its own, but gets curious and slithers toward the cursor
-//    when the mouse moves over the name. Colored by the time-of-day accent. ──
-const SNAKE_SEGMENTS = 26;
-
-const NameSnake = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    const parent = canvas.parentElement;
-    if (!parent) return;
-
-    let W = 0;
-    let H = 0;
-    const resize = () => {
-      W = canvas.width = parent.clientWidth;
-      H = canvas.height = parent.clientHeight;
-    };
-    resize();
-    window.addEventListener("resize", resize);
-
-    const pts = Array.from({ length: SNAKE_SEGMENTS }, () => ({ x: W * 0.3, y: H * 0.5 }));
-    const mouse: { x: number | null; y: number | null } = { x: null, y: null };
-    const onMove = (e: MouseEvent) => {
-      const r = canvas.getBoundingClientRect();
-      mouse.x = e.clientX - r.left;
-      mouse.y = e.clientY - r.top;
-    };
-    const onLeave = () => {
-      mouse.x = null;
-      mouse.y = null;
-    };
-    parent.addEventListener("mousemove", onMove);
-    parent.addEventListener("mouseleave", onLeave);
-
-    // Accent color tracks theme/time-of-day switches
-    const readAccent = () =>
-      getComputedStyle(canvas).getPropertyValue("--accent").trim() || "120 100% 40%";
-    let accent = readAccent();
-    const colorTimer = setInterval(() => {
-      accent = readAccent();
-    }, 2000);
-
-    let t = Math.random() * 100;
-    let raf = 0;
-    const frame = () => {
-      t += 0.008;
-      // Default: lazy lissajous wander through the letters
-      let tx = W * (0.5 + 0.42 * Math.sin(t * 1.3));
-      let ty = H * (0.5 + 0.3 * Math.sin(t * 2.1 + 1.7));
-      // Curiosity: the head steers toward the visitor's cursor
-      if (mouse.x !== null && mouse.y !== null) {
-        tx = mouse.x;
-        ty = mouse.y;
-      }
-      const head = pts[0];
-      head.x += (tx - head.x) * 0.055;
-      head.y += (ty - head.y) * 0.055;
-      for (let i = 1; i < SNAKE_SEGMENTS; i++) {
-        pts[i].x += (pts[i - 1].x - pts[i].x) * 0.3;
-        pts[i].y += (pts[i - 1].y - pts[i].y) * 0.3;
-      }
-
-      ctx.clearRect(0, 0, W, H);
-      for (let i = SNAKE_SEGMENTS - 1; i >= 0; i--) {
-        const k = 1 - i / SNAKE_SEGMENTS;
-        ctx.beginPath();
-        ctx.fillStyle = `hsl(${accent} / ${0.25 + k * 0.65})`;
-        ctx.arc(pts[i].x, pts[i].y, 1.4 + k * 3.4, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      // Attentive head glow when it's watching the cursor
-      if (mouse.x !== null) {
-        ctx.beginPath();
-        ctx.fillStyle = `hsl(${accent} / 0.35)`;
-        ctx.arc(head.x, head.y, 9, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      raf = requestAnimationFrame(frame);
-    };
-    raf = requestAnimationFrame(frame);
-
-    return () => {
-      cancelAnimationFrame(raf);
-      clearInterval(colorTimer);
-      window.removeEventListener("resize", resize);
-      parent.removeEventListener("mousemove", onMove);
-      parent.removeEventListener("mouseleave", onLeave);
-    };
-  }, []);
-
-  return <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-10" aria-hidden />;
 };
 
 export default ConnectSection;

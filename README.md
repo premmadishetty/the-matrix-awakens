@@ -316,10 +316,13 @@ Cloudflare propagates instantly but your browser may be caching. Hard refresh:
 
 | Resource | URL |
 |----------|-----|
-| Portfolio | https://the-matrix-awakens.vercel.app |
+| Portfolio (primary) | https://premmadishetty.com |
+| Portfolio (Vercel) | https://the-matrix-awakens.vercel.app |
 | Worker health | https://the-matrix-awakens.premmadishetty.workers.dev/api/health |
 | Admin dashboard | https://the-matrix-awakens.premmadishetty.workers.dev/admin |
 | Public blueprint repo | https://github.com/premmadishetty/the-matrix-awakens |
 
-> **Custom domain:** `premmadishetty.com` should be configured in the Vercel dashboard
-> (Project → Settings → Domains) — it is not a code change.
+> **Custom domain:** `premmadishetty.com` is the primary URL. Add it in the Vercel
+> dashboard (Project → Settings → Domains) and point your DNS at Vercel — this is a
+> dashboard/DNS step, not a code change. The worker CORS allowlist and the site
+> already reference `premmadishetty.com`.

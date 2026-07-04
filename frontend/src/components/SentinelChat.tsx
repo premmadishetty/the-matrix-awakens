@@ -2,22 +2,34 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Shield, Terminal, X, Send, Eraser, AlertCircle } from "lucide-react";
 
-const HANDSHAKE_LINES = [
+// Matrix mode keeps the cyber-terminal flavor; every other theme gets a plain,
+// friendly assistant vibe.
+const HANDSHAKE_MATRIX = [
   "> INITIALIZING NEURAL PROXY...",
   "> ESTABLISHING SECURE HANDSHAKE (KYBER-512)...",
   "> IDENTITY VERIFIED.",
 ] as const;
+const HANDSHAKE_FRIENDLY = [
+  "Hi there! 👋",
+  "I'm Prem's assistant.",
+  "Ask me anything about his work or experience.",
+] as const;
 
-const PROCESSING_STEPS = [
+const PROCESSING_MATRIX = [
   "[SCANNING_INPUT]",
   "[SANITIZING_PII]",
   "[GENERATING_RESPONSE]",
+] as const;
+const PROCESSING_FRIENDLY = [
+  "Reading...",
+  "Thinking...",
+  "Writing...",
 ] as const;
 
 const TYPEWRITER_MS = 28;
 const HANDSHAKE_INTERVAL_MS = 380;
 const PROCESSING_STEP_MS = 600;
-const PROCESSING_TOTAL_MS = PROCESSING_STEP_MS * PROCESSING_STEPS.length;
+const PROCESSING_TOTAL_MS = PROCESSING_STEP_MS * PROCESSING_MATRIX.length;
 
 type MessageRole = "system" | "user" | "assistant";
 
@@ -46,6 +58,11 @@ export default function SentinelChat({ isMatrixMode, isDarkMode = false }: Senti
   const [error, setError] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const handshakeStarted = useRef(false);
+
+  // Mode-aware chat copy: matrix = cyber terminal, otherwise a plain assistant
+  const HANDSHAKE_LINES = isMatrixMode ? HANDSHAKE_MATRIX : HANDSHAKE_FRIENDLY;
+  const PROCESSING_STEPS = isMatrixMode ? PROCESSING_MATRIX : PROCESSING_FRIENDLY;
+  const panelTitle = isMatrixMode ? "NEURAL PROXY" : "Prem's Assistant";
 
   // Theme helpers
   const isDark = isDarkMode || isMatrixMode;
@@ -250,7 +267,7 @@ export default function SentinelChat({ isMatrixMode, isDarkMode = false }: Senti
             <div className={`flex items-center justify-between border-b px-4 py-3 transition-colors duration-500 ${borderColor} ${textColor}`}>
               <div className="flex items-center gap-2">
                 <Shield className="h-4 w-4 shrink-0" />
-                <span className="text-sm font-medium tracking-tight">NEURAL PROXY</span>
+                <span className="text-sm font-medium tracking-tight">{panelTitle}</span>
                 {processingStatus && (
                   <span className={`ml-2 text-xs ${mutedText}`}>{processingStatus}</span>
                 )}

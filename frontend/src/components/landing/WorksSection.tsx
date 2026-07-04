@@ -27,7 +27,7 @@ const projects = [
   },
   {
     name: "the-matrix-awakens",
-    url: "https://the-matrix-awakens.vercel.app/",
+    url: "https://premmadishetty.com",
     description: "AI-powered cybersecurity portfolio. React + Cloudflare Workers + D1 + Groq LLM. The simulation is live.",
     tags: ["portfolio", "react", "cloudflare", "groq-ai"],
     lang: "JavaScript",

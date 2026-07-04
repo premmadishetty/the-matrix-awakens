@@ -61,7 +61,7 @@ const NavigationBar = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8, delay: 0.2 }}
-      className={`fixed top-0 left-0 right-0 z-50 ${mode === "dark" || mode === "matrix" ? "bg-black/60" : "bg-white/60"} backdrop-blur-md`}
+      className={`fixed top-0 left-0 right-0 z-50 ${mode === "matrix" ? "bg-black/60" : "bg-background/60"} backdrop-blur-md`}
     >
       <div className="w-full px-6 md:px-12 lg:px-20 py-5 flex items-center justify-between">
 
@@ -123,7 +123,7 @@ const NavigationBar = () => {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            className={`md:hidden overflow-hidden ${mode === "dark" || mode === "matrix" ? "bg-black/80" : "bg-white/90"} backdrop-blur-md`}
+            className={`md:hidden overflow-hidden ${mode === "matrix" ? "bg-black/80" : "bg-background/90"} backdrop-blur-md`}
           >
             <div className="flex flex-col px-6 pb-4">
               {navItems.map((item) => (

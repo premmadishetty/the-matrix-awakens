@@ -8,7 +8,7 @@ interface MatrixTransitionProps {
   onComplete: () => void;
 }
 
-// 2D rain → zoom → fade out. (The old 3D fly-through phase was cut.)
+// Dense 2D rain → slow deep zoom through the streams → fade into the site.
 const MatrixTransition = ({ onComplete }: MatrixTransitionProps) => {
   const [phase, setPhase] = useState<Phase>("rain2d");
   const [exiting, setExiting] = useState(false);
@@ -21,17 +21,17 @@ const MatrixTransition = ({ onComplete }: MatrixTransitionProps) => {
     setTimeout(() => onComplete(), 300);
   }, [onComplete]);
 
-  // Phase 1 → Phase 2: after 2.5s of 2D rain, begin zoom
+  // Phase 1 → Phase 2: after ~2.6s of dense rain, begin the zoom
   useEffect(() => {
     if (phase !== "rain2d") return;
-    const timer = setTimeout(() => setPhase("zoom"), 2500);
+    const timer = setTimeout(() => setPhase("zoom"), 2600);
     return () => clearTimeout(timer);
   }, [phase]);
 
-  // Phase 2 → done: zoom lasts ~1.2s, then a short buffer and graceful fade out
+  // Phase 2 → done: slow zoom lasts ~2.4s, then a graceful fade
   useEffect(() => {
     if (phase !== "zoom") return;
-    const timer = setTimeout(finish, 1400);
+    const timer = setTimeout(finish, 2400);
     return () => clearTimeout(timer);
   }, [phase, finish]);
 
@@ -44,12 +44,9 @@ const MatrixTransition = ({ onComplete }: MatrixTransitionProps) => {
     >
       {/* Scanline overlay always on top */}
       <div className="scanline fixed inset-0 pointer-events-none z-20" />
-      <span className="fixed bottom-6 left-1/2 -translate-x-1/2 z-30 font-mono text-[10px] tracking-[0.3em] uppercase text-green-500/40 pointer-events-none">
-        [ click to skip ]
-      </span>
 
       <AnimatePresence mode="wait">
-        {/* Phase 1: Flat 2D rain */}
+        {/* Phase 1: dense flat 2D rain */}
         {phase === "rain2d" && (
           <motion.div
             key="rain2d"
@@ -57,20 +54,22 @@ const MatrixTransition = ({ onComplete }: MatrixTransitionProps) => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <MatrixRain />
+            <MatrixRain dense fade={0.04} />
           </motion.div>
         )}
 
-        {/* Phase 2: 2D rain with zoom-in effect */}
+        {/* Phase 2: slow deep zoom through the rain — scales gently so the
+            character streams stay dense and rush past instead of thinning out */}
         {phase === "zoom" && (
           <motion.div
             key="zoom"
             className="fixed inset-0"
             initial={{ scale: 1, opacity: 1 }}
-            animate={{ scale: 6, opacity: 0 }}
-            transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] }}
+            animate={{ scale: 3.2, opacity: 0 }}
+            transition={{ duration: 2.4, ease: [0.45, 0, 0.55, 1] }}
+            style={{ transformOrigin: "center center" }}
           >
-            <MatrixRain />
+            <MatrixRain dense fade={0.03} speed={1.3} />
           </motion.div>
         )}
       </AnimatePresence>

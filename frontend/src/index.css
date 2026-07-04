@@ -157,21 +157,22 @@
   }
 
   /* Ambient wash — an omnipresent full-screen filter tinting the whole page
-     with the time-of-day mood. Breathes slowly like a living organism.
+     with the time-of-day mood. A FLAT uniform tint (no gradient bands) so the
+     color is seamless from the nav down to the footer. Breathes slowly.
      Hidden in matrix mode. */
   .time-wash {
     animation: wash-breathe 12s ease-in-out infinite;
   }
-  .theme-olha[data-time="morning"]   .time-wash { background: linear-gradient(180deg, rgba(217, 119, 6, 0.16), rgba(217, 119, 6, 0.08) 45%, rgba(217, 119, 6, 0.13)); }
-  .theme-olha[data-time="afternoon"] .time-wash { background: linear-gradient(180deg, rgba(14, 165, 233, 0.12), rgba(14, 165, 233, 0.05) 45%, rgba(14, 165, 233, 0.10)); }
-  .theme-olha[data-time="twilight"]  .time-wash { background: linear-gradient(180deg, rgba(124, 58, 237, 0.14), rgba(124, 58, 237, 0.06) 45%, rgba(124, 58, 237, 0.12)); }
-  .theme-olha[data-time="night"]     .time-wash { background: linear-gradient(180deg, rgba(71, 85, 105, 0.14), rgba(71, 85, 105, 0.06) 45%, rgba(71, 85, 105, 0.12)); }
-  .theme-olha[data-time="dawn"]      .time-wash { background: linear-gradient(180deg, rgba(225, 29, 72, 0.13), rgba(225, 29, 72, 0.05) 45%, rgba(225, 29, 72, 0.11)); }
-  .theme-dark[data-time="morning"]   .time-wash { background: linear-gradient(180deg, rgba(88, 166, 255, 0.14), rgba(88, 166, 255, 0.06) 45%, rgba(88, 166, 255, 0.11)); }
-  .theme-dark[data-time="afternoon"] .time-wash { background: linear-gradient(180deg, rgba(156, 163, 175, 0.10), rgba(156, 163, 175, 0.04) 45%, rgba(156, 163, 175, 0.08)); }
-  .theme-dark[data-time="twilight"]  .time-wash { background: linear-gradient(180deg, rgba(167, 139, 250, 0.16), rgba(167, 139, 250, 0.07) 45%, rgba(167, 139, 250, 0.13)); }
-  .theme-dark[data-time="night"]     .time-wash { background: linear-gradient(180deg, rgba(148, 163, 184, 0.09), rgba(148, 163, 184, 0.04) 45%, rgba(148, 163, 184, 0.07)); }
-  .theme-dark[data-time="dawn"]      .time-wash { background: linear-gradient(180deg, rgba(99, 102, 241, 0.16), rgba(99, 102, 241, 0.07) 45%, rgba(99, 102, 241, 0.13)); }
+  .theme-olha[data-time="morning"]   .time-wash { background: rgba(217, 119, 6, 0.11); }
+  .theme-olha[data-time="afternoon"] .time-wash { background: rgba(14, 165, 233, 0.08); }
+  .theme-olha[data-time="twilight"]  .time-wash { background: rgba(124, 58, 237, 0.10); }
+  .theme-olha[data-time="night"]     .time-wash { background: rgba(71, 85, 105, 0.10); }
+  .theme-olha[data-time="dawn"]      .time-wash { background: rgba(225, 29, 72, 0.09); }
+  .theme-dark[data-time="morning"]   .time-wash { background: rgba(88, 166, 255, 0.10); }
+  .theme-dark[data-time="afternoon"] .time-wash { background: rgba(156, 163, 175, 0.07); }
+  .theme-dark[data-time="twilight"]  .time-wash { background: rgba(167, 139, 250, 0.12); }
+  .theme-dark[data-time="night"]     .time-wash { background: rgba(148, 163, 184, 0.07); }
+  .theme-dark[data-time="dawn"]      .time-wash { background: rgba(99, 102, 241, 0.12); }
 
   /* ===== MATRIX THEME ===== */
   .theme-matrix {

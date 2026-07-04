@@ -1,12 +1,12 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "@/contexts/ThemeContext";
-import portraitBW from "@/assets/portrait-bw.png";
+import portraitColor from "@/assets/portrait-color.png";
 import portraitMatrix from "@/assets/portrait-matrix.png";
 
 // TO ADD MORE PHOTOS: import them above and add to portraitOptions array
 const portraitOptions = [
-  portraitBW,
+  portraitColor,
   // Add more imports here as: import portrait2 from "@/assets/portrait-2.png";
 ];
 
@@ -141,11 +141,12 @@ const HeroSection = () => {
       variants={container}
       initial="hidden"
       animate="visible"
-      className="w-full relative overflow-hidden h-[92dvh] md:h-[100dvh]"
+      className="w-full relative overflow-hidden h-[100dvh]"
     >
       <ShieldPulse mode={mode} />
       <DataDust />
 
+      {/* ══════════ DESKTOP ══════════ */}
       <motion.h1
         variants={item}
         className={`hidden md:block font-display uppercase leading-[0.82] text-foreground whitespace-nowrap text-center w-full relative z-10 ${
@@ -160,101 +161,40 @@ const HeroSection = () => {
         {displayText || " "}
       </motion.h1>
 
-      {/* MOBILE name — two lines filling screen width */}
-      <motion.div
-        variants={item}
-        className="md:hidden w-full text-center relative z-10"
-        style={{ paddingTop: "clamp(70px, 14dvh, 110px)" }}
-      >
-        <div
-          className={`font-display uppercase text-foreground ${mode === "matrix" ? "text-glow-strong" : ""}`}
-          style={{ fontSize: "clamp(4.5rem, 30vw, 11rem)", letterSpacing: "-0.04em", lineHeight: 0.88 }}
-        >
-          {(displayText || " ").slice(0, 4)}
-        </div>
-        <div
-          className={`font-display uppercase text-foreground ${mode === "matrix" ? "text-glow-strong" : ""}`}
-          style={{ fontSize: "clamp(2.1rem, 13vw, 5.5rem)", letterSpacing: "-0.04em", lineHeight: 0.88 }}
-        >
-          {(displayText || " ").slice(5)}
-        </div>
-      </motion.div>
-
-      {/* DESKTOP "Based in California" — original, untouched */}
+      {/* DESKTOP "Based in California" */}
       <motion.div
         variants={item}
         className="hidden md:flex w-full justify-end relative z-10"
         style={{ paddingRight: "clamp(50px, 7vw, 140px)" }}
       >
         <span
-          className={`font-mono uppercase text-foreground ${
-            mode === "matrix" ? "text-glow-strong" : ""
-          }`}
-          style={{
-            fontSize: "clamp(0.55rem, 0.85vw, 0.95rem)",
-            letterSpacing: "0.4em",
-          }}
+          className={`font-mono uppercase text-foreground ${mode === "matrix" ? "text-glow-strong" : ""}`}
+          style={{ fontSize: "clamp(0.55rem, 0.85vw, 0.95rem)", letterSpacing: "0.4em" }}
         >
           Based in California
         </span>
       </motion.div>
 
-      {/* MOBILE "Based in California" — centered, slightly larger */}
+      {/* DESKTOP portrait — bottom-center, typewriter floating to its left */}
       <motion.div
         variants={item}
-        className="md:hidden w-full flex justify-center relative z-10 mt-2"
-      >
-        <span
-          className={`font-mono uppercase text-foreground ${
-            mode === "matrix" ? "text-glow-strong" : ""
-          }`}
-          style={{ fontSize: "clamp(0.7rem, 2.9vw, 1rem)", letterSpacing: "0.3em" }}
-        >
-          Based in California
-        </span>
-      </motion.div>
-
-      {/* MOBILE typewriter — in flow under the location line, clear of the portrait */}
-      <motion.div variants={item} className="md:hidden w-full flex justify-center relative z-20 mt-4">
-        <span
-          className={`font-sans font-semibold leading-tight whitespace-nowrap ${
-            mode === "matrix" ? "text-glow-strong" : ""
-          }`}
-          style={{ fontSize: "clamp(0.95rem, 4.6vw, 1.4rem)", letterSpacing: "0.02em" }}
-        >
-          {typewriterContent}
-        </span>
-      </motion.div>
-
-      {/* Full-width flex centering — inline translateX(-50%) gets clobbered by the
-          framer entrance animation, which shoved the portrait off-center */}
-      <motion.div
-        variants={item}
-        className="absolute bottom-0 left-0 right-0 flex items-end justify-center"
-        style={{ height: "80dvh" }}
+        className="hidden md:flex absolute bottom-0 left-0 right-0 items-end justify-center"
+        style={{ height: "74dvh" }}
       >
         <div
           className="relative h-full flex items-end justify-center"
           style={{
             opacity: imageOpacity,
             transform: `scale(${imageScale}) translateY(${imageTranslateY}px)`,
+            transformOrigin: "bottom center",
             willChange: "opacity, transform",
           }}
         >
-          <img
-            src={portrait}
-            alt="Prem Madishetty"
-            className="h-full w-auto max-w-[94vw] md:max-w-none object-contain object-bottom"
-          />
-          {/* DESKTOP typewriter — same float position as the old two-line labels.
-              No uppercase transform so titles keep their casing (DevSecOps, SOC). */}
-          <div className="absolute left-0 bottom-[12%] hidden md:block"
-            style={{ transform: "translateX(calc(-100% - 24px))" }}
-          >
+          <img src={portrait} alt="Prem Madishetty" className="h-full w-auto object-contain object-bottom" />
+          {/* Typewriter — no uppercase transform so casing survives (DevSecOps, SOC) */}
+          <div className="absolute left-0 bottom-[16%]" style={{ transform: "translateX(calc(-100% - 24px))" }}>
             <span
-              className={`font-sans font-semibold leading-tight whitespace-nowrap ${
-                mode === "matrix" ? "text-glow-strong" : ""
-              }`}
+              className={`font-sans font-semibold leading-tight whitespace-nowrap ${mode === "matrix" ? "text-glow-strong" : ""}`}
               style={{ fontSize: "clamp(1rem, 1.5vw, 1.8rem)", letterSpacing: "0.02em" }}
             >
               {typewriterContent}
@@ -262,6 +202,46 @@ const HeroSection = () => {
           </div>
         </div>
       </motion.div>
+
+      {/* ══════════ MOBILE ══════════ */}
+      <div className="md:hidden flex flex-col h-full relative z-10">
+        <motion.div variants={item} className="flex-none text-center px-3 pt-[13dvh]">
+          <div
+            className={`font-display uppercase text-foreground ${mode === "matrix" ? "text-glow-strong" : ""}`}
+            style={{ fontSize: "clamp(4.5rem, 31vw, 11rem)", lineHeight: 0.84, letterSpacing: "-0.03em" }}
+          >
+            {(displayText || " ").slice(0, 4)}
+          </div>
+          <div
+            className={`font-display uppercase text-foreground ${mode === "matrix" ? "text-glow-strong" : ""}`}
+            style={{ fontSize: "clamp(2.3rem, 13.8vw, 5.5rem)", lineHeight: 0.86, letterSpacing: "-0.02em" }}
+          >
+            {(displayText || " ").slice(5)}
+          </div>
+          <div
+            className={`font-display uppercase text-foreground/85 mt-3 ${mode === "matrix" ? "text-glow-strong" : ""}`}
+            style={{ fontSize: "clamp(1rem, 4.6vw, 1.5rem)", letterSpacing: "0.3em" }}
+          >
+            Based in California
+          </div>
+          <div
+            className={`font-sans font-semibold mt-2 ${mode === "matrix" ? "text-glow-strong" : ""}`}
+            style={{ fontSize: "clamp(0.95rem, 4.4vw, 1.4rem)", letterSpacing: "0.02em" }}
+          >
+            {typewriterContent}
+          </div>
+        </motion.div>
+
+        {/* Photo fills the remaining space down to the very bottom edge — no gap, no overlap */}
+        <motion.div variants={item} className="flex-1 min-h-0 relative flex items-end justify-center">
+          <img
+            src={portrait}
+            alt="Prem Madishetty"
+            className="h-full w-auto max-w-[116vw] object-contain object-bottom"
+            style={{ opacity: imageOpacity, transform: `scale(${imageScale})`, transformOrigin: "bottom center" }}
+          />
+        </motion.div>
+      </div>
 
     </motion.section>
   );
