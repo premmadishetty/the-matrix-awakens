@@ -147,9 +147,11 @@ const HeroSection = () => {
       <DataDust />
 
       {/* ══════════ DESKTOP ══════════ */}
+      {/* z-0 so the portrait (z-20) occludes the name — the face sits IN FRONT of
+          the text, and the name shows through the transparent parts of the cutout */}
       <motion.h1
         variants={item}
-        className={`hidden md:block font-display uppercase leading-[0.82] text-foreground whitespace-nowrap text-center w-full relative z-10 ${
+        className={`hidden md:block font-display uppercase leading-[0.82] text-foreground whitespace-nowrap text-center w-full relative z-0 ${
           mode === "matrix" ? "text-glow-strong" : ""
         }`}
         style={{
@@ -175,10 +177,10 @@ const HeroSection = () => {
         </span>
       </motion.div>
 
-      {/* DESKTOP portrait — bottom-center, typewriter floating to its left */}
+      {/* DESKTOP portrait — z-20 so it sits IN FRONT of the name */}
       <motion.div
         variants={item}
-        className="hidden md:flex absolute bottom-0 left-0 right-0 items-end justify-center"
+        className="hidden md:flex absolute bottom-0 left-0 right-0 items-end justify-center z-20"
         style={{ height: "74dvh" }}
       >
         <div
@@ -250,21 +252,34 @@ const HeroSection = () => {
 // ── Ambient element: data dust — faint accent-colored motes drifting up the hero.
 //    Color follows the time-of-day accent, so the organism changes through the day. ──
 const DUST_MOTES = [
-  { left: "8%",  duration: 14, delay: 0 },
-  { left: "22%", duration: 18, delay: 4 },
-  { left: "37%", duration: 12, delay: 8 },
-  { left: "58%", duration: 16, delay: 2 },
-  { left: "74%", duration: 13, delay: 6 },
-  { left: "90%", duration: 17, delay: 10 },
+  { left: "6%",  duration: 13, delay: 0,   size: 5 },
+  { left: "14%", duration: 17, delay: 3,   size: 3 },
+  { left: "23%", duration: 11, delay: 6,   size: 6 },
+  { left: "31%", duration: 15, delay: 1.5, size: 4 },
+  { left: "43%", duration: 12, delay: 8,   size: 5 },
+  { left: "52%", duration: 18, delay: 4,   size: 3 },
+  { left: "61%", duration: 14, delay: 2,   size: 6 },
+  { left: "69%", duration: 16, delay: 7,   size: 4 },
+  { left: "78%", duration: 12, delay: 5,   size: 5 },
+  { left: "86%", duration: 15, delay: 9,   size: 3 },
+  { left: "94%", duration: 13, delay: 3.5, size: 6 },
 ];
 
+// "Spirit" motes — accent-colored embers drifting up the hero. Sits at z-30,
+// above the portrait, so they read clearly on the landing page.
 const DataDust = () => (
-  <div className="absolute inset-0 pointer-events-none z-10 opacity-60 md:opacity-100" aria-hidden>
+  <div className="absolute inset-0 pointer-events-none z-30 opacity-80 md:opacity-100" aria-hidden>
     {DUST_MOTES.map((m, i) => (
       <span
         key={i}
         className="dust-mote"
-        style={{ left: m.left, animationDuration: `${m.duration}s`, animationDelay: `${m.delay}s` }}
+        style={{
+          left: m.left,
+          width: m.size,
+          height: m.size,
+          animationDuration: `${m.duration}s`,
+          animationDelay: `${m.delay}s`,
+        }}
       />
     ))}
   </div>

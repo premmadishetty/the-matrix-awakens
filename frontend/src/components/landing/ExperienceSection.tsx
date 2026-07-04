@@ -72,9 +72,10 @@ const ExperienceSection = () => {
           const [location, dates] = exp.meta.split("—").map((s) => s.trim());
           return (
             <motion.div key={i}
-              initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
+              // Alternating slide-in: odd entries enter from the right, even from the left
+              initial={{ opacity: 0, x: i % 2 === 0 ? -60 : 60 }} whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.7, delay: i * 0.12, ease: [0.25, 0.46, 0.45, 0.94] }}
+              transition={{ duration: 0.7, delay: i * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
               className="mb-10 md:mb-14">
 
               {/* Role + date range — date right-aligned on desktop, below org on mobile */}

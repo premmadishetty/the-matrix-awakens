@@ -240,21 +240,35 @@ const ConnectSection = () => {
         </motion.div>
 
         {/* MOBILE — two big lines, more prominent */}
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ duration: 0.8 }} className="md:hidden w-full text-center px-3">
+        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ duration: 0.8 }} className="md:hidden w-full text-center px-2">
           <div className={`font-display uppercase leading-[0.84] ${isMatrix ? "text-green-400 text-glow-strong" : "text-foreground"}`}
-            style={{ fontSize: "clamp(4rem, 28vw, 9rem)", letterSpacing: "-0.04em" }}>
+            style={{ fontSize: "clamp(4.5rem, 33vw, 11rem)", letterSpacing: "-0.03em" }}>
             PREM
           </div>
           <div className={`font-display uppercase leading-[0.86] ${isMatrix ? "text-green-400 text-glow-strong" : "text-foreground"}`}
-            style={{ fontSize: "clamp(2.1rem, 13.5vw, 5rem)", letterSpacing: "-0.03em" }}>
+            style={{ fontSize: "clamp(2.4rem, 15vw, 5.5rem)", letterSpacing: "-0.02em" }}>
             MADISHETTY
           </div>
         </motion.div>
       </div>
 
-      {/* Bottom bar — two corners: clock left, credo right. Transparent so the
-          time-of-day wash tints it seamlessly with the rest of the page. */}
-      <div className={`w-full px-5 md:px-12 lg:px-20 py-5 mt-8 border-t border-border/20 ${isMatrix ? "bg-[#0a0a0a]" : "bg-transparent"}`}>
+      {/* Clock — sits directly below the name (left on desktop, centered on mobile).
+          Extra top margin clears the giant name's overflowing descenders. */}
+      <div className="w-full px-5 md:px-12 lg:px-20 mt-8 md:mt-12 flex justify-center md:justify-start">
+        <span className={`text-[10px] md:text-[10px] tracking-[0.15em] uppercase ${isMatrix ? "font-mono text-green-500/50" : "font-sans text-muted-foreground/60"}`}>
+          <span className="inline-flex items-end gap-[2px] mr-2 align-middle" aria-hidden>
+            {[7, 10, 5, 9].map((h, i) => (
+              <span key={i} className="signal-bar" style={{ height: h, animationDelay: `${i * 0.18}s` }} />
+            ))}
+          </span>
+          San Diego, California: (GMT-8) {pstTime}
+        </span>
+      </div>
+
+      {/* Bottom bar — Fortified credo bottom-left (desktop) / centered (mobile),
+          Sanskrit bottom-right (desktop) / centered (mobile). Transparent so the
+          time-of-day wash tints it seamlessly. */}
+      <div className={`w-full px-5 md:px-12 lg:px-20 pt-5 pb-20 md:pb-5 mt-3 border-t border-border/20 ${isMatrix ? "bg-[#0a0a0a]" : "bg-transparent"}`}>
         {showEasterEgg && (
           <div className="flex justify-center mb-3">
             <span
@@ -267,23 +281,13 @@ const ConnectSection = () => {
             </span>
           </div>
         )}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-3">
-          {/* LEFT — clock, left-aligned under the name */}
-          <span className={`text-[9px] md:text-[10px] tracking-[0.15em] uppercase text-left ${isMatrix ? "font-mono text-green-500/50" : "font-sans text-muted-foreground/60"}`}>
-            <span className="inline-flex items-end gap-[2px] mr-2 align-middle" aria-hidden>
-              {[7, 10, 5, 9].map((h, i) => (
-                <span key={i} className="signal-bar" style={{ height: h, animationDelay: `${i * 0.18}s` }} />
-              ))}
-            </span>
-            San Diego, California: (GMT-8) {pstTime}
+        <div className="flex flex-col items-center gap-2 text-center md:flex-row md:justify-between md:items-end md:text-left">
+          {/* Fortified — matches the site font (sans), bold */}
+          <span className={`text-[11px] md:text-xs font-bold tracking-[0.18em] uppercase ${isMatrix ? "font-mono text-green-400/90" : "font-sans text-foreground/85"}`}>
+            Fortified by Code, Guided by Gita © 2026
           </span>
-
-          {/* RIGHT — credo (bold) + Sanskrit, right-aligned; padded clear of the chat launcher */}
-          <div className="flex flex-col items-start md:items-end gap-1 md:pr-16 lg:pr-20">
-            <span className={`text-[11px] md:text-xs font-bold tracking-[0.18em] uppercase ${isMatrix ? "font-mono text-green-400/90" : "font-serif text-foreground/85"}`}>
-              Fortified by Code, Guided by Gita © 2026
-            </span>
-            <span className={`text-[12px] font-semibold tracking-wider ${isMatrix ? "font-mono text-green-400/70" : "font-serif text-foreground/60"}`}>
+          <div className="flex flex-col items-center md:items-end gap-0.5 md:pr-16 lg:pr-20">
+            <span className={`text-[13px] font-semibold tracking-wider ${isMatrix ? "font-mono text-green-400/70" : "font-serif text-foreground/70"}`}>
               {"सत्यमेव जयते"}
             </span>
             {isMatrix && <span className="font-mono text-[9px] text-green-500/40 tracking-widest">{"// All systems operational"}</span>}

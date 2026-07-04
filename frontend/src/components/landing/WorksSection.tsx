@@ -105,6 +105,8 @@ const WorksSection = () => {
   const gridScale = useTransform(scrollYProgress, [0, 0.4], [0.95, 1]);
   const headingY = useTransform(scrollYProgress, [0, 0.5], [60, 0]);
   const headingOpacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
+  // Parallax: the whole card grid drifts up slightly as the section scrolls by
+  const cardsParallax = useTransform(scrollYProgress, [0, 1], [50, -50]);
 
   // Grid color — visible in all 3 modes
   const gridColor = isMatrix
@@ -185,9 +187,10 @@ const WorksSection = () => {
         {isMatrix ? "Maya" : "Selected Projects"}
       </motion.p>
 
-      <div
+      <motion.div
         ref={trailRef}
         onMouseMove={handleTrailMove}
+        style={{ y: cardsParallax }}
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 relative z-10"
       >
         {/* Ambient scan beam sweeping down the grid, colored by the time-of-day accent */}
@@ -267,7 +270,7 @@ const WorksSection = () => {
             </div>
           </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 };

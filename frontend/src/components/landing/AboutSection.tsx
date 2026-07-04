@@ -13,6 +13,8 @@ const AboutSection = () => {
   const headingOpacity = useTransform(scrollYProgress, [0, 0.15], [0, 1]);
   const contentY = useTransform(scrollYProgress, [0.05, 0.35], [30, 0]);
   const contentOpacity = useTransform(scrollYProgress, [0.05, 0.25], [0, 1]);
+  // Parallax: the concentric rings drift opposite the scroll for depth
+  const ringsY = useTransform(scrollYProgress, [0, 1], [90, -90]);
 
   return (
     <section
@@ -124,6 +126,7 @@ const AboutSection = () => {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.9, delay: 0.2 }}
+          style={{ y: ringsY }}
           className="flex items-center justify-end md:pr-4 lg:pr-8"
         >
           <div className="relative w-72 h-72">
