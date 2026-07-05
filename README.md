@@ -4,7 +4,7 @@
 > **Keep this repository private.**
 
 [![Worker](https://img.shields.io/badge/BACKEND-Cloudflare_Workers-F48120?style=flat-square&logo=cloudflare)](https://the-matrix-awakens.premmadishetty.workers.dev/api/health)
-[![Frontend](https://img.shields.io/badge/FRONTEND-Vercel-black?style=flat-square&logo=vercel)](https://the-matrix-awakens.vercel.app)
+[![Frontend](https://img.shields.io/badge/FRONTEND-Vercel-black?style=flat-square&logo=vercel)](https://premmadishetty.vercel.app)
 [![Status](https://img.shields.io/badge/STATUS-LIVE-00ff41?style=flat-square)](#)
 
 ---
@@ -260,7 +260,7 @@ npm run db:init:remote
 Your Vercel URL isn't in the CORS allowlist in `worker.js`. Find this section:
 ```js
 const allowed = [
-  'https://the-matrix-awakens.vercel.app',
+  'https://premmadishetty.vercel.app',
   'http://localhost:5173',
 ];
 ```
@@ -317,7 +317,7 @@ Cloudflare propagates instantly but your browser may be caching. Hard refresh:
 | Resource | URL |
 |----------|-----|
 | Portfolio (primary) | https://premmadishetty.com |
-| Portfolio (Vercel) | https://the-matrix-awakens.vercel.app |
+| Portfolio (Vercel) | https://premmadishetty.vercel.app |
 | Worker health | https://the-matrix-awakens.premmadishetty.workers.dev/api/health |
 | Admin dashboard | https://the-matrix-awakens.premmadishetty.workers.dev/admin |
 | Public blueprint repo | https://github.com/premmadishetty/the-matrix-awakens |

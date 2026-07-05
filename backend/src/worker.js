@@ -14,6 +14,7 @@ matrixProxy.use('*', secureHeaders());
 matrixProxy.use('*', cors({
   origin: (origin) => {
     const allowed = [
+      'https://premmadishetty.vercel.app',
       'https://the-matrix-awakens.vercel.app',
       'https://premmadishetty.com',
       'https://www.premmadishetty.com',
@@ -21,8 +22,8 @@ matrixProxy.use('*', cors({
       'http://localhost:4173',
     ];
     if (allowed.includes(origin)) return origin;
-    // Vercel preview deployments of this project
-    if (/^https:\/\/the-matrix-awakens-[a-z0-9-]+-premmadishettys-projects\.vercel\.app$/.test(origin)) return origin;
+    // Vercel preview deployments of this project (any renamed slug)
+    if (/^https:\/\/[a-z0-9-]+-premmadishettys-projects\.vercel\.app$/.test(origin)) return origin;
     return allowed[0];
   },
   allowMethods: ['GET', 'POST', 'OPTIONS'],
