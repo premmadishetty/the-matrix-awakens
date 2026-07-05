@@ -13,7 +13,7 @@ compatibility_flags = ["nodejs_compat"]
 [[d1_databases]]
 binding      = "DB"               # accessed as c.env.DB in worker
 database_name = "matrix-karma-db"
-database_id  = "YOUR_D1_DATABASE_ID_HERE"   # filled after: wrangler d1 create matrix-karma-db
+database_id  = "8ed86f85-2a15-4ca2-9d9e-18060d44f913"
 
 # ━━━ SECRETS (set via CLI — never in this file) ━━━
 # wrangler secret put GROQ_API_KEY
